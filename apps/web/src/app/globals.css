@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "@fontsource-variable/atkinson-hyperlegible-next";
+
+/*
+ * Paleta de Rapa Nui:
+ * moana   océano profundo, color de la marca
+ * basalto piedra volcánica, texto
+ * rano    neblina sobre el cráter, fondo
+ * liquen  líquen amarillo sobre los moai, resalte puntual
+ * toromiro solo para errores
+ */
+@theme {
+  --color-moana-950: #062b33;
+  --color-moana-900: #08404b;
+  --color-moana-800: #0b5563;
+  --color-moana-600: #2d7b88;
+  --color-moana-200: #b9d6d9;
+  --color-moana-50: #e6f0f1;
+  --color-basalto: #23302f;
+  --color-basalto-soft: #56625f;
+  --color-rano: #e8efec;
+  --color-liquen: #d7b33c;
+  --color-liquen-soft: #f4e9c2;
+  --color-toromiro: #9e3b2e;
+  --color-toromiro-soft: #f6e1dd;
+
+  --font-sans: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala tipográfica 1.25 sobre 17 px */
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.3125rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.0625rem;
+  --text-3xl: 2.5625rem;
+  --text-display: 4.5rem;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-basalto);
+  background: var(--color-rano);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-liquen);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

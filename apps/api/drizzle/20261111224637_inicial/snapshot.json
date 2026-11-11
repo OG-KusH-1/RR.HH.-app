@@ -1,0 +1,1563 @@
+{
+  "type": "base",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "89136560-c1ae-4e37-bed1-4c18abbb7de0",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "estado_trabajador"
+      ],
+      "writes": [
+        "s|enum|public.estado_trabajador",
+        "n|enum|public.estado_trabajador",
+        "e|enum|public.estado_trabajador",
+        "n|type|public.estado_trabajador"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "rol"
+      ],
+      "writes": [
+        "s|enum|public.rol",
+        "n|enum|public.rol",
+        "e|enum|public.rol",
+        "n|type|public.rol"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "tipo_contrato"
+      ],
+      "writes": [
+        "s|enum|public.tipo_contrato",
+        "n|enum|public.tipo_contrato",
+        "e|enum|public.tipo_contrato",
+        "n|type|public.tipo_contrato"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "empresas"
+      ],
+      "writes": [
+        "s|tbl|public.empresas",
+        "n|tbl|public.empresas",
+        "e|tbl|public.empresas",
+        "n|rel|public.empresas",
+        "n|type|public.empresas",
+        "n|rel|public.empresas_pkey",
+        "n|rel|public.empresas_rut_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "registros_auditoria"
+      ],
+      "writes": [
+        "s|tbl|public.registros_auditoria",
+        "n|tbl|public.registros_auditoria",
+        "e|tbl|public.registros_auditoria",
+        "n|rel|public.registros_auditoria",
+        "n|type|public.registros_auditoria",
+        "n|rel|public.registros_auditoria_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "sedes"
+      ],
+      "writes": [
+        "s|tbl|public.sedes",
+        "n|tbl|public.sedes",
+        "e|tbl|public.sedes",
+        "n|rel|public.sedes",
+        "n|type|public.sedes",
+        "n|rel|public.sedes_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "sesiones"
+      ],
+      "writes": [
+        "s|tbl|public.sesiones",
+        "n|tbl|public.sesiones",
+        "e|tbl|public.sesiones",
+        "n|rel|public.sesiones",
+        "n|type|public.sesiones",
+        "n|rel|public.sesiones_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "trabajadores"
+      ],
+      "writes": [
+        "s|tbl|public.trabajadores",
+        "n|tbl|public.trabajadores",
+        "e|tbl|public.trabajadores",
+        "n|rel|public.trabajadores",
+        "n|type|public.trabajadores",
+        "n|rel|public.trabajadores_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.tipo_contrato",
+        "n|enum|public.estado_trabajador"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "usuarios"
+      ],
+      "writes": [
+        "s|tbl|public.usuarios",
+        "n|tbl|public.usuarios",
+        "e|tbl|public.usuarios",
+        "n|rel|public.usuarios",
+        "n|type|public.usuarios",
+        "n|rel|public.usuarios_pkey",
+        "n|rel|public.usuarios_trabajador_id_key"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.rol"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "registros_auditoria",
+        "auditoria_entidad_idx"
+      ],
+      "writes": [
+        "s|idx|public.auditoria_entidad_idx",
+        "n|idx|public.auditoria_entidad_idx",
+        "e|idx|public.auditoria_entidad_idx",
+        "n|rel|public.auditoria_entidad_idx"
+      ],
+      "reads": [
+        "n|tbl|public.registros_auditoria",
+        "n|sch|public",
+        "n|col|public.registros_auditoria.entidad",
+        "n|col|public.registros_auditoria.entidad_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "registros_auditoria",
+        "auditoria_fecha_idx"
+      ],
+      "writes": [
+        "s|idx|public.auditoria_fecha_idx",
+        "n|idx|public.auditoria_fecha_idx",
+        "e|idx|public.auditoria_fecha_idx",
+        "n|rel|public.auditoria_fecha_idx"
+      ],
+      "reads": [
+        "n|tbl|public.registros_auditoria",
+        "n|sch|public",
+        "n|col|public.registros_auditoria.fecha"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "sesiones",
+        "sesiones_usuario_idx"
+      ],
+      "writes": [
+        "s|idx|public.sesiones_usuario_idx",
+        "n|idx|public.sesiones_usuario_idx",
+        "e|idx|public.sesiones_usuario_idx",
+        "n|rel|public.sesiones_usuario_idx"
+      ],
+      "reads": [
+        "n|tbl|public.sesiones",
+        "n|sch|public",
+        "n|col|public.sesiones.usuario_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "sesiones",
+        "sesiones_expira_idx"
+      ],
+      "writes": [
+        "s|idx|public.sesiones_expira_idx",
+        "n|idx|public.sesiones_expira_idx",
+        "e|idx|public.sesiones_expira_idx",
+        "n|rel|public.sesiones_expira_idx"
+      ],
+      "reads": [
+        "n|tbl|public.sesiones",
+        "n|sch|public",
+        "n|col|public.sesiones.expira_en"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "trabajadores",
+        "trabajadores_empresa_rut_uq"
+      ],
+      "writes": [
+        "s|idx|public.trabajadores_empresa_rut_uq",
+        "n|idx|public.trabajadores_empresa_rut_uq",
+        "e|idx|public.trabajadores_empresa_rut_uq",
+        "n|rel|public.trabajadores_empresa_rut_uq"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.trabajadores.empresa_id",
+        "n|col|public.trabajadores.rut"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "trabajadores",
+        "trabajadores_sede_idx"
+      ],
+      "writes": [
+        "s|idx|public.trabajadores_sede_idx",
+        "n|idx|public.trabajadores_sede_idx",
+        "e|idx|public.trabajadores_sede_idx",
+        "n|rel|public.trabajadores_sede_idx"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.trabajadores.sede_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "registros_auditoria"
+      ],
+      "writes": [
+        "s|fk|public.registros_auditoria.registros_auditoria_empresa_id_empresas_id_fkey",
+        "n|fk|public.registros_auditoria.registros_auditoria_empresa_id_empresas_id_fkey",
+        "e|fk|public.registros_auditoria.registros_auditoria_empresa_id_empresas_id_fkey",
+        "n|con|public.registros_auditoria.registros_auditoria_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registros_auditoria",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.registros_auditoria.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "registros_auditoria"
+      ],
+      "writes": [
+        "s|fk|public.registros_auditoria.registros_auditoria_usuario_id_usuarios_id_fkey",
+        "n|fk|public.registros_auditoria.registros_auditoria_usuario_id_usuarios_id_fkey",
+        "e|fk|public.registros_auditoria.registros_auditoria_usuario_id_usuarios_id_fkey",
+        "n|con|public.registros_auditoria.registros_auditoria_usuario_id_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.registros_auditoria",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.registros_auditoria.usuario_id",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "sedes"
+      ],
+      "writes": [
+        "s|fk|public.sedes.sedes_empresa_id_empresas_id_fkey",
+        "n|fk|public.sedes.sedes_empresa_id_empresas_id_fkey",
+        "e|fk|public.sedes.sedes_empresa_id_empresas_id_fkey",
+        "n|con|public.sedes.sedes_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.sedes",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.sedes.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "sesiones"
+      ],
+      "writes": [
+        "s|fk|public.sesiones.sesiones_usuario_id_usuarios_id_fkey",
+        "n|fk|public.sesiones.sesiones_usuario_id_usuarios_id_fkey",
+        "e|fk|public.sesiones.sesiones_usuario_id_usuarios_id_fkey",
+        "n|con|public.sesiones.sesiones_usuario_id_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.sesiones",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.sesiones.usuario_id",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "trabajadores"
+      ],
+      "writes": [
+        "s|fk|public.trabajadores.trabajadores_empresa_id_empresas_id_fkey",
+        "n|fk|public.trabajadores.trabajadores_empresa_id_empresas_id_fkey",
+        "e|fk|public.trabajadores.trabajadores_empresa_id_empresas_id_fkey",
+        "n|con|public.trabajadores.trabajadores_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.trabajadores.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "trabajadores"
+      ],
+      "writes": [
+        "s|fk|public.trabajadores.trabajadores_sede_id_sedes_id_fkey",
+        "n|fk|public.trabajadores.trabajadores_sede_id_sedes_id_fkey",
+        "e|fk|public.trabajadores.trabajadores_sede_id_sedes_id_fkey",
+        "n|con|public.trabajadores.trabajadores_sede_id_sedes_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|tbl|public.sedes",
+        "n|sch|public",
+        "n|col|public.trabajadores.sede_id",
+        "n|col|public.sedes.id",
+        "e|uniqueness|public.sedes.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "usuarios"
+      ],
+      "writes": [
+        "s|fk|public.usuarios.usuarios_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.usuarios.usuarios_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.usuarios.usuarios_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.usuarios.usuarios_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.usuarios.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    }
+  ],
+  "ddl": [
+    {
+      "schema": "public",
+      "name": "empresas",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "registros_auditoria",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "sedes",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "sesiones",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "trabajadores",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "usuarios",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "estado_trabajador",
+      "values": [
+        "ACTIVO",
+        "DESVINCULADO"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "rol",
+      "values": [
+        "TRABAJADOR",
+        "JEFATURA",
+        "PERSONAS",
+        "GERENCIA",
+        "ADMIN"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "name": "tipo_contrato",
+      "values": [
+        "INDEFINIDO",
+        "PLAZO_FIJO",
+        "OBRA_FAENA"
+      ],
+      "entityType": "enums"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "rut",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "razon_social",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "nombre_fantasia",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "creado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "actualizado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "empresa_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "usuario_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "accion",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "entidad",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "entidad_id",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "detalle",
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "ip",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "fecha",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "empresa_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "nombre",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "ciudad",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "zona_horaria",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "creado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "actualizado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "id",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "usuario_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "creada_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "expira_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "ultima_actividad",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "mfa",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "metadata",
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "empresa_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "sede_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "jefatura_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "rut",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "nombres",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "apellidos",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "cargo",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "fecha_ingreso",
+      "type": "date",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "tipo_contrato",
+      "type": "tipo_contrato",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "horas_semanales",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "42",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "telefono",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "estado",
+      "type": "estado_trabajador",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'ACTIVO'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "creado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "actualizado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "trabajador_id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "rol",
+      "type": "rol",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'TRABAJADOR'",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "hash_clave",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "intentos_fallidos",
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "0",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "bloqueado_hasta",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "ultimo_ingreso",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "creado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "actualizado_en",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "auditoria_entidad_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "entidad",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "entidad_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "auditoria_fecha_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "fecha",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "sesiones_usuario_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "usuario_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "sesiones_expira_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "expira_en",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "trabajadores_empresa_rut_uq",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "empresa_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "rut",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "trabajadores_sede_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "sede_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "registros_auditoria_empresa_id_empresas_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "empresa_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "empresas",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "registros_auditoria_usuario_id_usuarios_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "usuario_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "usuarios",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "sedes_empresa_id_empresas_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "empresa_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "empresas",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "sesiones_usuario_id_usuarios_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "usuario_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "usuarios",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "trabajadores_empresa_id_empresas_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "empresa_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "empresas",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "trabajadores_sede_id_sedes_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "sede_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "sedes",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "usuarios_trabajador_id_trabajadores_id_fkey",
+      "nameExplicit": false,
+      "columns": [
+        "trabajador_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "trabajadores",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "entityType": "fks"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "empresas_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "registros_auditoria",
+      "name": "registros_auditoria_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "sedes",
+      "name": "sedes_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "sesiones",
+      "name": "sesiones_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "trabajadores",
+      "name": "trabajadores_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "usuarios_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "empresas",
+      "name": "empresas_rut_key",
+      "nameExplicit": false,
+      "columns": [
+        "rut"
+      ],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    },
+    {
+      "schema": "public",
+      "table": "usuarios",
+      "name": "usuarios_trabajador_id_key",
+      "nameExplicit": false,
+      "columns": [
+        "trabajador_id"
+      ],
+      "nullsNotDistinct": false,
+      "entityType": "uniques"
+    }
+  ]
+}

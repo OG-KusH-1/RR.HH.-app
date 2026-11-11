@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: tangata
+          POSTGRES_PASSWORD: tangata
+          POSTGRES_DB: tangata
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U tangata"
+          --health-interval 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://tangata:tangata@localhost:5432/tangata
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Pruebas de la API
+        run: pnpm --filter @tangata/api test
+      - name: Migraciones y datos de demostración
+        run: |
+          pnpm --filter @tangata/api exec drizzle-kit migrate
+          pnpm --filter @tangata/api exec tsx src/db/seed.ts
+      - name: Compilar API
+        run: pnpm --filter @tangata/api build
+      - name: Revisar y compilar web
+        run: |
+          pnpm --filter @tangata/web lint
+          pnpm --filter @tangata/web build
+      - name: Auditoría de dependencias
+        run: pnpm audit --prod --audit-level high
+        continue-on-error: true

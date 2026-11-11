@@ -12,7 +12,7 @@ Plataforma de gestión de personas para pymes con varias sedes. Caso de estudio:
 |---|---|
 | 1. Descubrimiento y caso de negocio | Completa |
 | 2. Arquitectura y backlog | Completa |
-| 3. MVP (8 semanas, 4 sprints) | Por iniciar |
+| 3. MVP (8 semanas, 4 sprints) | Sprint 1 en curso |
 | 4. Piloto en una sede | Pendiente |
 
 ## El problema en una frase
@@ -49,7 +49,31 @@ Lo que **no** hace, por diseño: no calcula remuneraciones, no reemplaza el regi
 
 ## Stack
 
-TypeScript de punta a punta: Next.js (frontend), NestJS (API), PostgreSQL con Prisma, desplegado en AWS con Terraform y GitHub Actions. Justificación en el [ADR-0001](docs/adr/0001-stack-typescript.md).
+TypeScript de punta a punta: Next.js (frontend), NestJS (API), PostgreSQL con Drizzle, desplegado en AWS con Terraform y GitHub Actions. Justificación en el [ADR-0001](docs/adr/0001-stack-typescript.md).
+
+## Cómo ejecutarlo
+
+Requisitos: Node 22, pnpm 10 y Docker (o un PostgreSQL local).
+
+```bash
+pnpm install
+docker compose up -d db                 # PostgreSQL en el puerto 5432
+cp apps/api/.env.example apps/api/.env
+pnpm db:migrate                         # crea las tablas
+pnpm db:seed                            # carga la empresa de demostración
+pnpm dev                                # API en :4000 y portal en :3000
+```
+
+Abre http://localhost:3000 e ingresa con un usuario de demostración. La contraseña de todos es `Tangata2026!`.
+
+| Rol | RUT | Persona |
+|---|---|---|
+| Gerencia | 12.400.137-4 | Rodrigo Pakarati, gerente general |
+| Personas | 12.400.274-5 | Marcela Tuki, encargada de personas |
+| Jefatura | 12.403.151-6 | Josefina Teave, jefa del minimarket |
+| Trabajador | 12.403.288-1 | Camila Hotus, cajera |
+
+Cada uno ve cosas distintas: prueba con los cuatro.
 
 ## Cómo se trabaja en este repositorio
 

@@ -1,0 +1,14 @@
+{
+  "name": "tangata",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @tangata/web --filter @tangata/api dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "db:up": "docker compose up -d db",
+    "db:migrate": "pnpm --filter @tangata/api db:migrate",
+    "db:seed": "pnpm --filter @tangata/api db:seed"
+  }
+}

@@ -56,7 +56,7 @@ flowchart TB
 |---|---|---|
 | Aplicación web | Next.js, React, TypeScript | Interfaz adaptable a celular, instalable como aplicación web (PWA) |
 | API | NestJS, TypeScript | Reglas de negocio, permisos, auditoría |
-| Base de datos | PostgreSQL con Prisma | Datos estructurados |
+| Base de datos | PostgreSQL con Drizzle | Datos estructurados |
 | Documentos | S3 privado | Archivos; nunca públicos, se entregan con enlaces que caducan |
 | Correo | SES | Avisos y recuperación de contraseña |
 | Secretos | Secrets Manager | Credenciales fuera del código |
