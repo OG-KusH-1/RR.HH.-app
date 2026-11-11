@@ -302,3 +302,31 @@ Una historia está terminada cuando:
 - **Criterios de aceptación verificables.** Son el contrato entre lo que pidió el cliente y lo que se entrega, y se convierten directamente en pruebas.
 - **Puntos en vez de horas.** Estimar tamaño relativo es más confiable que adivinar horas exactas.
 - **El MVP es chico a propósito.** 82 puntos caben en 8 semanas; lo demás espera a que el piloto confirme que la gente lo usa.
+
+---
+
+## E10. Remuneraciones (Fase 3)
+
+Las fórmulas de una liquidación son deterministas: con parámetros correctos, el resultado es correcto. El riesgo real está en **mantener los parámetros al día** (UF, UTM, tramos de impuesto, topes, tasas de cada AFP y planes de Isapre) y en los casos de borde (licencias parciales, ingresos a mitad de mes, horas extra). Por eso entra en la fase 3 y en modo de referencia antes de reemplazar al contador.
+
+### HU-28. Parámetros previsionales
+**Como** encargada de personas **quiero** que el sistema tenga los indicadores del mes (UF, UTM, topes, tasas) **para** calcular sin digitarlos.
+
+Puntos: 5.
+
+- Los indicadores se cargan cada mes desde una fuente oficial o a mano, con fecha de vigencia.
+- Un cálculo siempre usa los parámetros vigentes en su período.
+
+### HU-29. Liquidación de referencia
+**Como** encargada de personas **quiero** que el sistema calcule una liquidación con los datos del mes **para** compararla con la del contador.
+
+Puntos: 13.
+
+- Calcula sueldo base proporcional, horas extra con recargo, gratificación con tope, descuentos de AFP, salud, seguro de cesantía e impuesto único.
+- Muestra cada línea con su fórmula.
+- Un conjunto de liquidaciones reales verificadas sirve como pruebas automáticas.
+
+### HU-30. Comparación con el contador
+**Como** gerente **quiero** ver las diferencias entre el cálculo del sistema y el del contador **para** decidir cuándo confiar en el sistema.
+
+Puntos: 5.
