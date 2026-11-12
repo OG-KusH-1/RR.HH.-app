@@ -19,6 +19,7 @@ import { AlmacenLocal } from '../documentos/almacen.js';
 import { contarDiasHabiles } from '../ausencias/calendario-laboral.js';
 import {
   afps,
+  cambiosTurno,
   certificados,
   documentos,
   documentosRequeridos,
@@ -38,6 +39,7 @@ import {
   tiposAusencia,
   tiposDocumento,
   trabajadores,
+  turnos,
   usuarios,
   type Trabajador,
 } from './schema.js';
@@ -251,6 +253,8 @@ const TIPOS_AUSENCIA = [
 
 async function main() {
   // Orden inverso a las claves foráneas.
+  await db.delete(cambiosTurno);
+  await db.delete(turnos);
   await db.delete(notificaciones);
   await db.delete(movimientosVacaciones);
   await db.delete(solicitudesAusencia);
@@ -351,6 +355,7 @@ async function main() {
 
   await sembrarAusencias(empresa.id);
   await sembrarDocumentos(empresa.id);
+  await sembrarTurnos(empresa.id);
 
   console.log(`Empresa: ${empresa.razonSocial}, ${indice} trabajadores.\n`);
   console.log(`Usuarios de demostración (contraseña: ${CLAVE_DEMO}):`);
@@ -515,6 +520,39 @@ async function sembrarDocumentos(empresaId: string) {
   const plazoFijo = lista.filter((t) => t.tipoContrato === 'PLAZO_FIJO');
   for (const [i, t] of plazoFijo.entries()) {
     await db.update(trabajadores).set({ fechaTerminoContrato: mas([9, 24, 52, 95, 160][i % 5]) }).where(eq(trabajadores.id, t.id));
+  }
+}
+
+/**
+ * Turnos publicados del Minimarket Hanga Roa para las semanas del 2 y del 9 de noviembre.
+ * La semana del 16 queda vacía a propósito, para practicar "copiar semana anterior" y publicar.
+ * Rotación simple: turno de mañana o tarde y dos días libres que avanzan con cada persona.
+ */
+async function sembrarTurnos(empresaId: string) {
+  const [josefina] = await db.select().from(trabajadores).where(eq(trabajadores.nombres, 'Josefina'));
+  const equipo = await db.select().from(trabajadores).where(eq(trabajadores.jefaturaId, josefina.id)).orderBy(trabajadores.apellidos);
+  const licenciaDiego = (t: Trabajador, f: string) => t.nombres === 'Diego' && f >= '2026-11-09' && f <= '2026-11-15';
+  const filas: (typeof turnos.$inferInsert)[] = [];
+  for (const lunes of ['2026-11-02', '2026-11-09']) {
+    equipo.forEach((t, i) => {
+      const partTime = t.horasSemanales < 42;
+      const libres = new Set([(i * 2) % 7, (i * 2 + 1) % 7, ...(partTime ? [(i * 2 + 3) % 7] : [])]);
+      for (let d = 0; d < 7; d++) {
+        if (libres.has(d)) continue;
+        const fecha = new Date(Date.UTC(2026, 10, Number(lunes.slice(8)) + d)).toISOString().slice(0, 10);
+        if (licenciaDiego(t, fecha)) continue;
+        const manana = (i + d) % 2 === 0;
+        filas.push({ empresaId, trabajadorId: t.id, fecha, inicio: manana ? '08:00' : '13:30', fin: manana ? (partTime ? '15:30' : '16:30') : partTime ? '21:00' : '22:00', colacionMin: 30, publicado: true });
+      }
+    });
+  }
+  const insertados = await db.insert(turnos).values(filas).returning();
+  // Un cambio de turno esperando la respuesta de la compañera.
+  const camila = equipo.find((t) => t.nombres === 'Camila')!;
+  const paula = equipo.find((t) => t.nombres === 'Paula')!;
+  const deCamila = insertados.find((t) => t.trabajadorId === camila.id && t.fecha >= '2026-11-13');
+  if (deCamila) {
+    await db.insert(cambiosTurno).values({ empresaId, turnoSolicitanteId: deCamila.id, solicitanteId: camila.id, companeroId: paula.id, motivo: 'Control médico de mi hijo.' });
   }
 }
 

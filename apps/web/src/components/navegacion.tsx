@@ -35,6 +35,7 @@ const GESTION: Rol[] = ["PERSONAS", "GERENCIA", "ADMIN"];
 export const destinos: (Destino & { movil?: boolean; grupo: string })[] = [
   { href: "/", texto: "Inicio", grupo: "Personal", movil: true, icono: icono("M4 11l8-7 8 7v9h-5v-6H9v6H4z") },
   { href: "/vacaciones", texto: "Vacaciones", grupo: "Personal", movil: true, icono: icono("M4 20h16", "M12 4v16", "M12 4c-4 0-7 2.5-8 6h16c-1-3.5-4-6-8-6z") },
+  { href: "/turnos", texto: "Mis turnos", grupo: "Personal", icono: icono("M12 21a9 9 0 100-18 9 9 0 000 18z", "M12 7v5h4") },
   { href: "/mi-ficha", texto: "Mi ficha", grupo: "Personal", icono: icono("M12 12a4 4 0 100-8 4 4 0 000 8z", "M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6") },
   { href: "/documentos", texto: "Mis documentos", grupo: "Personal", icono: icono("M7 3h7l5 5v13H7z", "M14 3v5h5", "M10 13h6M10 17h6") },
   { href: "/certificados", texto: "Certificados", grupo: "Personal", icono: icono("M5 4h14v12H5z", "M9 9h6M9 12h4", "M9 16l-1 5 4-2 4 2-1-5") },
@@ -42,10 +43,12 @@ export const destinos: (Destino & { movil?: boolean; grupo: string })[] = [
   { href: "/cuenta", texto: "Mi cuenta", grupo: "Personal", icono: icono("M7 11V8a5 5 0 0110 0v3", "M5 11h14v9H5z") },
   { href: "/avisos", texto: "Avisos", grupo: "Personal", movil: true, icono: icono("M6 16V11a6 6 0 1112 0v5l1.5 2h-15z", "M10 20.5a2 2 0 004 0") },
   { href: "/aprobaciones", texto: "Aprobaciones", grupo: "Equipo", roles: ["JEFATURA", "PERSONAS", "GERENCIA"], icono: icono("M5 12l4 4 10-10", "M4 20h16") },
+  { href: "/turnos/armar", texto: "Armar turnos", grupo: "Equipo", roles: ["JEFATURA", "PERSONAS"], icono: icono("M4 5h16v15H4z", "M4 10h16M9 5v15M14 5v15") },
   { href: "/calendario", texto: "Calendario", grupo: "Equipo", roles: TODOS, icono: icono("M4 6h16v14H4z", "M4 10h16", "M8 3v4M16 3v4") },
   { href: "/equipo", texto: "Mi equipo", grupo: "Equipo", roles: ["JEFATURA", ...GESTION], icono: icono("M9 12.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z", "M3 19c1-3.2 3.3-5 6-5s5 1.8 6 5M15 15.5c2.6-.4 4.6 1 5.5 3.5", "M17 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z") },
   { href: "/panel", texto: "Panel", grupo: "Empresa", roles: GESTION, icono: icono("M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z") },
   { href: "/vencimientos", texto: "Vencimientos", grupo: "Empresa", roles: ["JEFATURA", "PERSONAS", "GERENCIA"], icono: icono("M12 21a9 9 0 100-18 9 9 0 000 18z", "M12 7v5l3 2") },
+  { href: "/novedades", texto: "Novedades del mes", grupo: "Empresa", roles: ["PERSONAS", "GERENCIA"], icono: icono("M6 3h9l4 4v14H6z", "M9 12h7M9 16h7M9 8h3") },
   { href: "/auditoria", texto: "Auditoría", grupo: "Empresa", roles: ["PERSONAS", "GERENCIA"], icono: icono("M11 18a7 7 0 100-14 7 7 0 000 14z", "M21 21l-5-5") },
   { href: "/indicadores", texto: "Indicadores", grupo: "Empresa", roles: GESTION, icono: icono("M4 19h16M7 16V10M12 16V5M17 16v-4") },
   { href: "/empresa", texto: "Sedes", grupo: "Empresa", roles: GESTION, icono: icono("M3 20h18M5 20V9l5-3v14M10 20V4l9 4v12") },
@@ -100,7 +103,12 @@ export function Navegacion() {
     router.replace("/ingresar");
   }
 
-  const activo = (href: string) => (href === "/" ? ruta === "/" : ruta.startsWith(href));
+  // Coincidencia más específica: en /turnos/armar no se marca también "Mis turnos".
+  const activo = (href: string) => {
+    if (href === "/") return ruta === "/";
+    const candidatos = visibles.map((d) => d.href).filter((h) => h !== "/" && ruta.startsWith(h));
+    return candidatos.sort((a, b) => b.length - a.length)[0] === href;
+  };
 
   return (
     <>

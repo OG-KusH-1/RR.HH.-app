@@ -1,0 +1,971 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "002ec291-977b-41be-94ec-9d020bae0b9d",
+  "prevIds": [
+    "2f9ab8ea-f035-4c8b-ab57-d5ee231b60d0"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "estado_cambio_turno"
+      ],
+      "writes": [
+        "s|enum|public.estado_cambio_turno",
+        "n|enum|public.estado_cambio_turno",
+        "e|enum|public.estado_cambio_turno",
+        "n|type|public.estado_cambio_turno"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|tbl|public.cambios_turno",
+        "n|tbl|public.cambios_turno",
+        "e|tbl|public.cambios_turno",
+        "n|rel|public.cambios_turno",
+        "n|type|public.cambios_turno",
+        "n|rel|public.cambios_turno_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.estado_cambio_turno"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "turnos"
+      ],
+      "writes": [
+        "s|tbl|public.turnos",
+        "n|tbl|public.turnos",
+        "e|tbl|public.turnos",
+        "n|rel|public.turnos",
+        "n|type|public.turnos",
+        "n|rel|public.turnos_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "turnos",
+        "turnos_persona_dia_uq"
+      ],
+      "writes": [
+        "s|idx|public.turnos_persona_dia_uq",
+        "n|idx|public.turnos_persona_dia_uq",
+        "e|idx|public.turnos_persona_dia_uq",
+        "n|rel|public.turnos_persona_dia_uq"
+      ],
+      "reads": [
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|col|public.turnos.trabajador_id",
+        "n|col|public.turnos.fecha"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "turnos",
+        "turnos_empresa_fecha_idx"
+      ],
+      "writes": [
+        "s|idx|public.turnos_empresa_fecha_idx",
+        "n|idx|public.turnos_empresa_fecha_idx",
+        "e|idx|public.turnos_empresa_fecha_idx",
+        "n|rel|public.turnos_empresa_fecha_idx"
+      ],
+      "reads": [
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|col|public.turnos.empresa_id",
+        "n|col|public.turnos.fecha"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_empresa_id_empresas_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_empresa_id_empresas_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_empresa_id_empresas_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.cambios_turno.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_turno_solicitante_id_turnos_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_turno_solicitante_id_turnos_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_turno_solicitante_id_turnos_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_turno_solicitante_id_turnos_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|col|public.cambios_turno.turno_solicitante_id",
+        "n|col|public.turnos.id",
+        "e|uniqueness|public.turnos.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_turno_companero_id_turnos_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_turno_companero_id_turnos_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_turno_companero_id_turnos_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_turno_companero_id_turnos_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|col|public.cambios_turno.turno_companero_id",
+        "n|col|public.turnos.id",
+        "e|uniqueness|public.turnos.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_solicitante_id_trabajadores_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_solicitante_id_trabajadores_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_solicitante_id_trabajadores_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_solicitante_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.cambios_turno.solicitante_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_companero_id_trabajadores_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_companero_id_trabajadores_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_companero_id_trabajadores_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_companero_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.cambios_turno.companero_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "cambios_turno"
+      ],
+      "writes": [
+        "s|fk|public.cambios_turno.cambios_turno_resuelto_por_usuarios_id_fkey",
+        "n|fk|public.cambios_turno.cambios_turno_resuelto_por_usuarios_id_fkey",
+        "e|fk|public.cambios_turno.cambios_turno_resuelto_por_usuarios_id_fkey",
+        "n|con|public.cambios_turno.cambios_turno_resuelto_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.cambios_turno",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.cambios_turno.resuelto_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "turnos"
+      ],
+      "writes": [
+        "s|fk|public.turnos.turnos_empresa_id_empresas_id_fkey",
+        "n|fk|public.turnos.turnos_empresa_id_empresas_id_fkey",
+        "e|fk|public.turnos.turnos_empresa_id_empresas_id_fkey",
+        "n|con|public.turnos.turnos_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.turnos.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "turnos"
+      ],
+      "writes": [
+        "s|fk|public.turnos.turnos_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.turnos.turnos_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.turnos.turnos_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.turnos.turnos_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.turnos.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "turnos"
+      ],
+      "writes": [
+        "s|fk|public.turnos.turnos_creado_por_usuarios_id_fkey",
+        "n|fk|public.turnos.turnos_creado_por_usuarios_id_fkey",
+        "e|fk|public.turnos.turnos_creado_por_usuarios_id_fkey",
+        "n|con|public.turnos.turnos_creado_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.turnos",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.turnos.creado_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "cambios_turno",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "turnos",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "estado_cambio_turno",
+        "values": [
+          "ESPERA_COMPANERO",
+          "ESPERA_JEFATURA",
+          "APROBADO",
+          "RECHAZADO",
+          "CANCELADO"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "turno_solicitante_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "turno_companero_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "solicitante_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "companero_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "motivo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "estado",
+        "type": "estado_cambio_turno",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'ESPERA_COMPANERO'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "resuelto_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "resuelto_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "fecha",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "inicio",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "fin",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "colacion_min",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "30",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "publicado",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "creado_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "actualizado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_persona_dia_uq",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "trabajador_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "fecha",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": true,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_empresa_fecha_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "empresa_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "fecha",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_turno_solicitante_id_turnos_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "turno_solicitante_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "turnos",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_turno_companero_id_turnos_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "turno_companero_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "turnos",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_solicitante_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "solicitante_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_companero_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "companero_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_resuelto_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "resuelto_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_creado_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "creado_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "cambios_turno",
+        "name": "cambios_turno_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "turnos",
+        "name": "turnos_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    }
+  ]
+}

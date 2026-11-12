@@ -401,6 +401,78 @@ export interface SolicitudTitular {
   apellidos: string;
 }
 
+// ---------------------------------------------------------------- turnos y novedades
+
+export interface ProblemaTurno {
+  nivel: "error" | "alerta";
+  fecha?: string;
+  mensaje: string;
+}
+
+export interface TurnoCelda {
+  id: string;
+  inicio: string;
+  fin: string;
+  colacionMin: number;
+  publicado: boolean;
+  horas: number;
+}
+
+export interface SemanaTurnos {
+  lunes: string;
+  dias: string[];
+  feriados: { fecha: string; nombre: string; irrenunciable: boolean }[];
+  filas: { persona: { id: string; nombres: string; apellidos: string; cargo: string; horasPactadas: number }; dias: { fecha: string; turno: TurnoCelda | null; ausencia: string | null }[]; horas: number; problemas: ProblemaTurno[] }[];
+  sinPublicar: number;
+  sedes: { id: string; nombre: string }[];
+}
+
+export interface TurnoSimple {
+  id: string;
+  fecha: string;
+  inicio: string;
+  fin: string;
+  colacionMin?: number;
+  horas?: number;
+}
+
+export interface MisTurnos {
+  desde: string;
+  hasta: string;
+  turnos: TurnoSimple[];
+  equipo: (TurnoSimple & { trabajadorId: string; nombres: string; apellidos: string })[];
+  companeros: { id: string; nombres: string; apellidos: string }[];
+}
+
+export interface CambioTurno {
+  id: string;
+  estado: "ESPERA_COMPANERO" | "ESPERA_JEFATURA" | "APROBADO" | "RECHAZADO" | "CANCELADO";
+  motivo: string | null;
+  solicitanteId: string;
+  companeroId: string;
+  solicitante: string;
+  companero: string;
+  turnoSolicitante?: TurnoSimple;
+  turnoCompanero: TurnoSimple | null;
+  puedoResponder: boolean;
+  puedoAprobar: boolean;
+  creadoEn: string;
+}
+
+export interface FilaNovedad {
+  rut: string;
+  nombre: string;
+  sede: string;
+  ingreso: string;
+  salida: string;
+  vacaciones: number;
+  permisoConGoce: number;
+  permisoSinGoce: number;
+  permisoLegal: number;
+  licenciaDiasCorridos: number;
+  horasSobreJornada: number;
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -504,4 +576,18 @@ export const api = {
   todasSolicitudesDatos: () => solicitar<SolicitudTitular[]>("/privacidad/solicitudes/todas"),
   solicitarDatos: (tipo: "ACCESO" | "RECTIFICACION", detalle: string) => solicitar<{ id: string }>("/privacidad/solicitudes", { method: "POST", body: JSON.stringify({ tipo, detalle }) }),
   responderDatos: (id: string, estado: "RESUELTA" | "RECHAZADA", respuesta: string) => solicitar<void>(`/privacidad/solicitudes/${id}/responder`, { method: "POST", body: JSON.stringify({ estado, respuesta }) }),
+  // Turnos y novedades
+  semanaTurnos: (fecha: string, sedeId?: string) => solicitar<SemanaTurnos>(`/turnos/semana?fecha=${fecha}${sedeId ? `&sedeId=${sedeId}` : ""}`),
+  guardarTurno: (d: { trabajadorId: string; fecha: string; inicio: string; fin: string; colacionMin: number }) =>
+    solicitar<{ ok: true; alertas: ProblemaTurno[] }>("/turnos", { method: "PUT", body: JSON.stringify(d) }),
+  eliminarTurno: (id: string) => solicitar<void>(`/turnos/${id}`, { method: "DELETE" }),
+  copiarSemana: (fecha: string, sedeId?: string) => solicitar<{ copiados: number; omitidos: number }>("/turnos/copiar-semana-anterior", { method: "POST", body: JSON.stringify({ fecha, sedeId }) }),
+  publicarTurnos: (fecha: string, sedeId?: string) => solicitar<{ publicados: number; personas: number }>("/turnos/publicar", { method: "POST", body: JSON.stringify({ fecha, sedeId }) }),
+  misTurnos: () => solicitar<MisTurnos>("/turnos/mios"),
+  cambiosTurno: () => solicitar<CambioTurno[]>("/turnos/cambios"),
+  pedirCambio: (d: { turnoId: string; companeroId: string; turnoCompaneroId?: string; motivo?: string }) => solicitar<{ id: string }>("/turnos/cambios", { method: "POST", body: JSON.stringify(d) }),
+  responderCambio: (id: string, acepta: boolean) => solicitar<void>(`/turnos/cambios/${id}/responder`, { method: "POST", body: JSON.stringify({ acepta }) }),
+  resolverCambio: (id: string, acepta: boolean) => solicitar<void>(`/turnos/cambios/${id}/resolver`, { method: "POST", body: JSON.stringify({ acepta }) }),
+  cancelarCambio: (id: string) => solicitar<void>(`/turnos/cambios/${id}/cancelar`, { method: "POST" }),
+  novedades: (mes: string) => solicitar<{ mes: string; filas: FilaNovedad[] }>(`/novedades?mes=${mes}`),
 };

@@ -462,6 +462,61 @@ export const solicitudesTitular = pgTable('solicitudes_titular', {
   creadaEn: timestamp('creada_en', { withTimezone: true }).notNull().defaultNow(),
 });
 
+// ---------------------------------------------------------------------------
+// Turnos (Fase 2: HU-23 a HU-25)
+// Un turno por persona y día. Las horas se guardan como texto "HH:MM" en la hora
+// local de la sede: un turno de 08:00 en Rapa Nui es 08:00 allá, no un instante UTC.
+// ---------------------------------------------------------------------------
+
+export const turnos = pgTable(
+  'turnos',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    empresaId: uuid('empresa_id')
+      .notNull()
+      .references(() => empresas.id),
+    trabajadorId: uuid('trabajador_id')
+      .notNull()
+      .references(() => trabajadores.id),
+    fecha: date().notNull(),
+    inicio: text().notNull(),
+    fin: text().notNull(),
+    /** Minutos de colación, que no son jornada (art. 34 CT). */
+    colacionMin: integer('colacion_min').notNull().default(30),
+    /** Un turno en borrador solo lo ve quien arma la semana; al publicar se avisa a cada persona. */
+    publicado: boolean().notNull().default(false),
+    creadoPor: uuid('creado_por').references(() => usuarios.id),
+    ...auditoria,
+  },
+  (t) => [uniqueIndex('turnos_persona_dia_uq').on(t.trabajadorId, t.fecha), index('turnos_empresa_fecha_idx').on(t.empresaId, t.fecha)],
+);
+
+export const estadoCambioTurnoEnum = pgEnum('estado_cambio_turno', ['ESPERA_COMPANERO', 'ESPERA_JEFATURA', 'APROBADO', 'RECHAZADO', 'CANCELADO']);
+
+/** Cambio de turno entre dos personas (HU-25): acepta el compañero y aprueba la jefatura. */
+export const cambiosTurno = pgTable('cambios_turno', {
+  id: uuid().primaryKey().defaultRandom(),
+  empresaId: uuid('empresa_id')
+    .notNull()
+    .references(() => empresas.id),
+  turnoSolicitanteId: uuid('turno_solicitante_id')
+    .notNull()
+    .references(() => turnos.id, { onDelete: 'cascade' }),
+  /** Turno que el solicitante toma a cambio. Nulo si solo cede su turno. */
+  turnoCompaneroId: uuid('turno_companero_id').references(() => turnos.id, { onDelete: 'cascade' }),
+  solicitanteId: uuid('solicitante_id')
+    .notNull()
+    .references(() => trabajadores.id),
+  companeroId: uuid('companero_id')
+    .notNull()
+    .references(() => trabajadores.id),
+  motivo: text(),
+  estado: estadoCambioTurnoEnum().notNull().default('ESPERA_COMPANERO'),
+  resueltoPor: uuid('resuelto_por').references(() => usuarios.id),
+  creadoEn: timestamp('creado_en', { withTimezone: true }).notNull().defaultNow(),
+  resueltoEn: timestamp('resuelto_en', { withTimezone: true }),
+});
+
 export type Empresa = typeof empresas.$inferSelect;
 export type Sede = typeof sedes.$inferSelect;
 export type Trabajador = typeof trabajadores.$inferSelect;
