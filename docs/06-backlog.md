@@ -6,6 +6,21 @@ Historias de usuario con criterios de aceptación en formato Dado / Cuando / Ent
 - **Puntos:** esfuerzo relativo en la serie 1, 2, 3, 5, 8.
 - **Etapa:** MVP, Fase 2 o Fase 3.
 
+## Estado al 12-11-2026
+
+Implementadas en el código, con pruebas de sus reglas: **HU-01 a HU-25 y HU-28, HU-29**. Pendientes: HU-26 y HU-27 (asistente de IA, requiere API de un modelo) y HU-30 (comparación con el contador, requiere liquidaciones reales). Detalle de diseño en [12. Vacaciones, documentos, seguridad y turnos](12-vacaciones-y-documentos.md).
+
+| Historias | Estado |
+|---|---|
+| HU-01 a HU-07 (acceso y fichas) | Hechas |
+| HU-08 a HU-13 (vacaciones y ausencias) | Hechas |
+| HU-14 a HU-18 (documentos y certificados) | Hechas |
+| HU-19 a HU-21 (auditoría, privacidad, panel) | Hechas |
+| HU-22 a HU-25 (novedades y turnos) | Hechas |
+| HU-26, HU-27 (asistente de IA) | Fase de integraciones |
+| HU-28, HU-29 (remuneraciones de referencia) | Hechas |
+| HU-30 (comparación con el contador) | Requiere 3 meses de liquidaciones reales |
+
 ## Resumen
 
 | Épica | Historias | Puntos | Etapa |

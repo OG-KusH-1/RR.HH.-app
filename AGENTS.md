@@ -15,6 +15,24 @@ Este archivo lo leen las herramientas de IA (Claude, Gemini en Antigravity, Copi
 3. **Datos personales.** Toda vista de una ficha ajena, liquidación o documento se registra con `AuditoriaService`. Los sueldos nunca van al detalle de auditoría ni a los logs. Las jefaturas no ven sueldos.
 4. **Secretos fuera del repositorio.** Variables en `.env` (ignorado) y `.env.example` sin valores reales.
 5. **Sin decisiones automáticas sobre personas.** El sistema informa; contratar, despedir, sancionar o aprobar lo hace una persona.
+6. **Archivos siempre cifrados.** Todo archivo pasa por `cifrar()` antes del almacén y se descarga solo con enlace firmado de corta vida. Nunca URLs públicas.
+7. **Libros, no saldos editables.** Vacaciones y avisos automáticos se registran como movimientos o con clave única; un error se corrige con otro movimiento, nunca editando el anterior.
+
+## Mapa de módulos de la API
+
+| Carpeta | Responsabilidad |
+|---|---|
+| `auth/` | Ingreso, sesiones, invitaciones, segundo factor (TOTP) |
+| `employees/` | Fichas, alcance por rol, carga desde planilla |
+| `ausencias/` | Saldo de vacaciones, solicitudes, calendario, feriados |
+| `documentos/` | Carpeta cifrada, enlaces firmados, vencimientos, faltantes |
+| `certificados/` | Certificados con código y verificación pública |
+| `turnos/` | Turnos semanales, cambios, archivo de novedades |
+| `previsional/` | Indicadores, AFP y salud, liquidación de referencia |
+| `privacidad/` | Consulta de auditoría y derechos del titular |
+| `panel/` | Resumen para gerencia |
+| `avisos/` | Avisos dentro del portal; único punto para notificar |
+| `audit/` | Registro de auditoría, solo inserción |
 
 ## Estilo de código
 

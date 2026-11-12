@@ -12,8 +12,10 @@ Plataforma de gestión de personas para pymes con varias sedes. Caso de estudio:
 |---|---|
 | 1. Descubrimiento y caso de negocio | Completa |
 | 2. Arquitectura y backlog | Completa |
-| 3. MVP (8 semanas, 4 sprints) | Sprint 1 en curso |
-| 4. Piloto en una sede | Pendiente |
+| 3. MVP (21 historias) | Completo |
+| 4. Fase 2 sin integraciones externas: turnos y novedades | Completa |
+| 5. Integraciones: correo, WhatsApp, almacenamiento S3, asistente de IA, Previred | Pendiente |
+| 6. Piloto en una sede | Pendiente |
 
 ## El problema en una frase
 
@@ -23,14 +25,18 @@ Una persona administra a mano (Excel, WhatsApp, carpetas y libros de papel) las 
 
 Un portal web donde cada trabajador resuelve solo sus trámites frecuentes, las jefaturas aprueban desde el celular, y RR.HH. deja de ser una mesa de ayuda para dedicarse a las personas.
 
-- Vacaciones y permisos con saldo automático y flujo de aprobación.
-- Ficha del trabajador y carpeta digital con alertas de vencimiento.
-- Turnos de los minimarkets publicados y con cambios trazables.
-- Certificados en autoservicio.
-- Reportes para gerencia.
-- Fase 2: asistente de IA que responde dudas sobre el reglamento interno.
-
-- Liquidación de referencia con indicadores previsionales que se actualizan solos y Personas confirma cada mes.
+| Módulo | Qué hace |
+|---|---|
+| Acceso | Ingreso con RUT, invitación de un solo uso, segundo factor obligatorio para roles amplios |
+| Fichas | Crear, editar, desvincular y cargar desde planilla, con auditoría campo a campo |
+| Vacaciones y ausencias | Saldo legal calculado (progresivo incluido), solicitud con vista previa, aprobación con conflictos del equipo, licencias con datos reservados, calendario |
+| Documentos | Carpeta digital cifrada, enlaces de descarga de 5 minutos, avisos de vencimiento, carpetas incompletas |
+| Certificados | Antigüedad en PDF con QR y verificación pública |
+| Turnos | Grilla semanal con reglas del Código del Trabajo, publicación y cambios de turno |
+| Remuneraciones | Liquidación de referencia con indicadores que se actualizan solos y Personas confirma |
+| Reportes | Panel de gerencia, novedades del mes para el contador en CSV |
+| Privacidad | Auditoría consultable, copia de datos propios, solicitudes de rectificación |
+| Avisos | Campana dentro del portal (correo y WhatsApp en la fase de integraciones) |
 
 Lo que **no** hace, por diseño: no reemplaza la liquidación oficial del contador (todavía), no reemplaza el registro legal de asistencia y no toma decisiones sobre personas. Las razones están en los [ADR](docs/adr/).
 
@@ -49,6 +55,7 @@ Lo que **no** hace, por diseño: no reemplaza la liquidación oficial del contad
 | [09. Propuesta comercial](docs/09-propuesta-comercial.md) | El documento que se entrega al cliente |
 | [10. Liquidaciones](docs/10-liquidaciones.md) | Cálculo de referencia, fuentes de datos y fórmulas |
 | [11. Plan con Antigravity](docs/11-plan-antigravity.md) | Qué tareas delegar a Gemini y cómo revisarlas |
+| [12. Vacaciones, documentos, seguridad y turnos](docs/12-vacaciones-y-documentos.md) | Reglas legales, casos calculados a mano y diseño de seguridad |
 | [AGENTS.md](AGENTS.md) | Reglas para agentes de IA y personas nuevas |
 | [Decisiones de arquitectura (ADR)](docs/adr/) | Por qué se eligió cada cosa |
 
@@ -64,6 +71,8 @@ Requisitos: Node 22, pnpm 10 y Docker (o un PostgreSQL local).
 pnpm install
 docker compose up -d db                 # PostgreSQL en el puerto 5432
 cp apps/api/.env.example apps/api/.env
+# Completa CLAVE_CIFRADO y SECRETO_ENLACES con: openssl rand -base64 32
+# En tu computador puedes poner SEGUNDO_FACTOR_OBLIGATORIO=false para probar sin celular.
 pnpm db:migrate                         # crea las tablas
 pnpm db:seed                            # carga la empresa de demostración
 pnpm dev                                # API en :4000 y portal en :3000
@@ -77,6 +86,8 @@ Abre http://localhost:3000 e ingresa con un usuario de demostración. La contras
 | Personas | 12.400.274-5 | Marcela Tuki, encargada de personas |
 | Jefatura | 12.403.151-6 | Josefina Teave, jefa del minimarket |
 | Trabajador | 12.403.288-1 | Camila Hotus, cajera |
+
+Recorrido sugerido: Camila pide vacaciones → Josefina ve que Fernanda ya estará ausente y decide → Marcela revisa vencimientos y carpetas incompletas → Rodrigo abre el panel. Josefina también puede copiar la semana anterior en "Armar turnos" y publicarla.
 
 Cada uno ve cosas distintas: prueba con los cuatro.
 
