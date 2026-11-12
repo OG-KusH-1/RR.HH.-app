@@ -26,6 +26,10 @@ export interface Trabajador {
   zonaHoraria: string;
   jefaturaId: string | null;
   telefono?: string | null;
+  email?: string | null;
+  fechaTerminoContrato?: string | null;
+  rol?: Rol;
+  cuentaActiva?: boolean;
   afpId?: string | null;
   afp?: string | null;
   saludId?: string | null;
@@ -343,6 +347,60 @@ export interface Panel {
   };
 }
 
+// ---------------------------------------------------------------- cuenta, fichas y privacidad
+
+export interface EstadoSegundoFactor {
+  activo: boolean;
+  obligatorio: boolean;
+}
+
+export interface DatosFicha {
+  rut: string;
+  nombres: string;
+  apellidos: string;
+  cargo: string;
+  sedeId: string;
+  jefaturaId?: string | null;
+  fechaIngreso: string;
+  tipoContrato: "INDEFINIDO" | "PLAZO_FIJO" | "OBRA_FAENA";
+  fechaTerminoContrato?: string | null;
+  horasSemanales: number;
+  telefono?: string | null;
+  email?: string | null;
+  rol?: Rol;
+}
+
+export interface OpcionesFicha {
+  sedes: { id: string; nombre: string }[];
+  jefaturas: { id: string; nombres: string; apellidos: string; cargo: string; rol: Rol }[];
+}
+
+export interface ResultadoImportacion {
+  cargados: number;
+  validas: number;
+  errores: { fila: number; mensaje: string }[];
+  vista: { fila: number; rut: string; nombre: string; cargo: string; sede: string; tipoContrato: string; saldoVacaciones: number | null }[];
+}
+
+export interface RegistroAuditoria {
+  id: string;
+  fecha: string;
+  accion: string;
+  entidad: string;
+  entidadId: string | null;
+  detalle: Record<string, unknown> | null;
+  ip: string | null;
+  actorNombres: string | null;
+  actorApellidos: string | null;
+  actorRol: Rol | null;
+}
+
+export interface SolicitudTitular {
+  s: { id: string; tipo: "ACCESO" | "RECTIFICACION"; detalle: string; estado: "ABIERTA" | "RESUELTA" | "RECHAZADA"; respuesta: string | null; creadaEn: string; resueltaEn: string | null };
+  nombres: string;
+  apellidos: string;
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -368,10 +426,10 @@ async function solicitar<T>(ruta: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
-  ingresar: (rut: string, clave: string) =>
-    solicitar<{ usuario: Usuario }>("/auth/ingresar", { method: "POST", body: JSON.stringify({ rut, clave }) }),
+  ingresar: (rut: string, clave: string, codigo?: string) =>
+    solicitar<{ usuario?: Usuario; requiereCodigo?: boolean }>("/auth/ingresar", { method: "POST", body: JSON.stringify({ rut, clave, codigo }) }),
   salir: () => solicitar<void>("/auth/salir", { method: "POST" }),
-  yo: () => solicitar<{ usuario: Usuario }>("/auth/yo"),
+  yo: () => solicitar<{ usuario: Usuario; segundoFactor: EstadoSegundoFactor }>("/auth/yo"),
   trabajadores: () => solicitar<Trabajador[]>("/trabajadores"),
   trabajador: (id: string) => solicitar<Trabajador>(`/trabajadores/${id}`),
   resumen: () => solicitar<ResumenSede[]>("/trabajadores/resumen"),
@@ -425,4 +483,25 @@ export const api = {
   misCertificados: () => solicitar<Certificado[]>("/certificados/mios"),
   verificarCertificado: (codigo: string) => solicitar<Verificacion>(`/certificados/verificar/${encodeURIComponent(codigo)}`),
   panel: (mes?: string) => solicitar<Panel>(`/panel${mes ? `?mes=${mes}` : ""}`),
+  // Cuenta
+  activar: (rut: string, codigo: string, clave: string) => solicitar<{ ok: true }>("/auth/activar", { method: "POST", body: JSON.stringify({ rut, codigo, clave }) }),
+  cambiarClave: (actual: string, nueva: string) => solicitar<{ ok: true }>("/auth/clave", { method: "POST", body: JSON.stringify({ actual, nueva }) }),
+  iniciar2fa: () => solicitar<{ secreto: string; uri: string; qr: string }>("/auth/2fa/iniciar", { method: "POST" }),
+  confirmar2fa: (codigo: string) => solicitar<{ ok: true }>("/auth/2fa/confirmar", { method: "POST", body: JSON.stringify({ codigo }) }),
+  // Fichas
+  opcionesFicha: () => solicitar<OpcionesFicha>("/trabajadores/opciones-ficha"),
+  crearFicha: (d: DatosFicha) => solicitar<{ id: string }>("/trabajadores", { method: "POST", body: JSON.stringify(d) }),
+  editarFicha: (id: string, d: Partial<DatosFicha>) => solicitar<{ ok: true; camposCambiados: string[] }>(`/trabajadores/${id}`, { method: "PATCH", body: JSON.stringify(d) }),
+  desvincular: (id: string, fecha: string, motivo: string) =>
+    solicitar<{ ok: true; saldoVacacionesAlTermino: number; nota: string }>(`/trabajadores/${id}/desvincular`, { method: "POST", body: JSON.stringify({ fecha, motivo }) }),
+  invitar: (id: string) => solicitar<{ codigo: string; expiraEn: string; enlace: string; mensaje: string }>(`/trabajadores/${id}/invitacion`, { method: "POST" }),
+  restablecer2fa: (id: string) => solicitar<void>(`/trabajadores/${id}/restablecer-2fa`, { method: "POST" }),
+  importar: (contenido: string, confirmar: boolean) => solicitar<ResultadoImportacion>("/trabajadores/importar", { method: "POST", body: JSON.stringify({ contenido, confirmar }) }),
+  // Auditoría y privacidad
+  auditoria: (f: Record<string, string>) => solicitar<{ registros: RegistroAuditoria[]; hayMas: boolean; pagina: number; acciones: string[] }>(`/auditoria?${new URLSearchParams(Object.entries(f).filter(([, v]) => v))}`),
+  misDatos: () => solicitar<Record<string, unknown>>("/privacidad/mis-datos"),
+  misSolicitudesDatos: () => solicitar<SolicitudTitular[]>("/privacidad/solicitudes"),
+  todasSolicitudesDatos: () => solicitar<SolicitudTitular[]>("/privacidad/solicitudes/todas"),
+  solicitarDatos: (tipo: "ACCESO" | "RECTIFICACION", detalle: string) => solicitar<{ id: string }>("/privacidad/solicitudes", { method: "POST", body: JSON.stringify({ tipo, detalle }) }),
+  responderDatos: (id: string, estado: "RESUELTA" | "RECHAZADA", respuesta: string) => solicitar<void>(`/privacidad/solicitudes/${id}/responder`, { method: "POST", body: JSON.stringify({ estado, respuesta }) }),
 };

@@ -6,6 +6,7 @@ import { Ficha } from "@/components/ficha";
 import { Prevision } from "@/components/prevision";
 import { VacacionesFicha } from "@/components/vacaciones-ficha";
 import { DocumentosFicha } from "@/components/documentos-ficha";
+import { AdminFicha } from "@/components/admin-ficha";
 import { useUsuario } from "@/components/sesion";
 import { useState } from "react";
 import { api } from "@/lib/api";
@@ -31,6 +32,7 @@ export default function FichaTrabajadorPage() {
           <p className="mt-2 text-basalto-soft">Esta consulta queda registrada, como toda vista de una ficha ajena.</p>
           <div className="mt-8">
             <Ficha t={datos} />
+            <AdminFicha t={datos} alCambiar={() => setVersion((v) => v + 1)} />
             <Prevision t={datos} editable={usuario.rol === "PERSONAS"} alGuardar={() => setVersion((v) => v + 1)} />
             <VacacionesFicha trabajadorId={datos.id} esPersonas={usuario.rol === "PERSONAS"} />
             <DocumentosFicha trabajadorId={datos.id} />

@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AuthorizationService } from '@nestjs/authorization';
 import { InjectDrizzle } from '@nestjs/drizzle';
-import { and, asc, count, eq, or, type SQL } from 'drizzle-orm';
+import { and, asc, count, eq, or, sql, type SQL } from 'drizzle-orm';
 import { AuditoriaService } from '../audit/auditoria.service.js';
 import type { UsuarioAutenticado } from '../auth/usuario-autenticado.js';
 import type { Database } from '../db/database.js';
-import { afps, institucionesSalud, sedes, trabajadores } from '../db/schema.js';
+import { afps, institucionesSalud, sedes, trabajadores, usuarios } from '../db/schema.js';
 import { alcanceListado } from './alcance.js';
 import { TrabajadoresPolicy } from './trabajadores.policy.js';
 
@@ -55,6 +55,10 @@ export class TrabajadoresService {
       .select({
         ...columnasLista,
         telefono: trabajadores.telefono,
+        email: trabajadores.email,
+        fechaTerminoContrato: trabajadores.fechaTerminoContrato,
+        rol: usuarios.rol,
+        cuentaActiva: sql<boolean>`${usuarios.hashClave} is not null`,
         afpId: trabajadores.afpId,
         afp: afps.nombre,
         saludId: trabajadores.saludId,
@@ -65,6 +69,7 @@ export class TrabajadoresService {
       })
       .from(trabajadores)
       .innerJoin(sedes, eq(sedes.id, trabajadores.sedeId))
+      .leftJoin(usuarios, eq(usuarios.trabajadorId, trabajadores.id))
       .leftJoin(afps, eq(afps.id, trabajadores.afpId))
       .leftJoin(institucionesSalud, eq(institucionesSalud.id, trabajadores.saludId))
       .where(eq(trabajadores.id, id));

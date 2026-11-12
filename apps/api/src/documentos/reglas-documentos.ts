@@ -27,6 +27,7 @@ export function detectarTipo(bytes: Buffer): MimePermitido | null {
 /** Nombre seguro para guardar y para la cabecera de descarga: sin rutas ni caracteres de control. */
 export function limpiarNombre(nombre: string): string {
   const base = nombre.split(/[\\/]/).pop() ?? 'documento';
+  // oxlint-disable-next-line no-control-regex -- se eliminan caracteres de control a propósito.
   const limpio = base.normalize('NFC').replace(/[\u0000-\u001f"<>|:*?]/g, '').trim().slice(0, 120);
   return limpio || 'documento';
 }

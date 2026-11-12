@@ -11,7 +11,9 @@ export function Ficha({ t }: { t: Trabajador }) {
     ["Contrato", CONTRATO[t.tipoContrato]],
     ["Jornada", `${t.horasSemanales} horas semanales`],
   ];
+  if (t.fechaTerminoContrato) filas.push(["Término pactado", formatearFecha(t.fechaTerminoContrato)]);
   if (t.telefono) filas.push(["Teléfono", t.telefono]);
+  if (t.email) filas.push(["Correo personal", t.email]);
   return (
     <dl className="divide-y divide-moana-200 border-y border-moana-200">
       {filas.map(([k, v]) => (

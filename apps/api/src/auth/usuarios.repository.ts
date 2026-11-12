@@ -33,7 +33,7 @@ export class UsuariosRepository {
   /** Datos para verificar la contraseña. Solo trabajadores activos pueden ingresar. */
   async buscarCredenciales(rut: string) {
     const [fila] = await this.db
-      .select({ ...columnasUsuario, hashClave: usuarios.hashClave, intentosFallidos: usuarios.intentosFallidos, bloqueadoHasta: usuarios.bloqueadoHasta })
+      .select({ ...columnasUsuario, hashClave: usuarios.hashClave, intentosFallidos: usuarios.intentosFallidos, bloqueadoHasta: usuarios.bloqueadoHasta, totpSecretoCifrado: usuarios.totpSecretoCifrado, totpActivadoEn: usuarios.totpActivadoEn })
       .from(usuarios)
       .innerJoin(trabajadores, eq(trabajadores.id, usuarios.trabajadorId))
       .where(and(eq(trabajadores.rut, rut), eq(trabajadores.estado, 'ACTIVO')));

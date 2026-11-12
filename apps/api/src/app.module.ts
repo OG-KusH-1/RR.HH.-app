@@ -13,6 +13,7 @@ import { AvisosModule } from './avisos/avisos.module.js';
 import { CertificadosModule } from './certificados/certificados.module.js';
 import { DocumentosModule } from './documentos/documentos.module.js';
 import { PanelModule } from './panel/panel.module.js';
+import { PrivacidadModule } from './privacidad/privacidad.module.js';
 import { validarEnv, type Env } from './config/env.js';
 import { relations } from './db/relations.js';
 import { TrabajadoresModule } from './employees/trabajadores.module.js';
@@ -52,6 +53,7 @@ import { PrevisionalModule } from './previsional/previsional.module.js';
     DocumentosModule,
     CertificadosModule,
     PanelModule,
+    PrivacidadModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

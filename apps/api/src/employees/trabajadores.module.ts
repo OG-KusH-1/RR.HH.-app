@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AuditoriaModule } from '../audit/auditoria.module.js';
-import { TrabajadoresController } from './trabajadores.controller.js';
+import { AuthModule } from '../auth/auth.module.js';
+import { FichasService } from './fichas.service.js';
+import { FichasPolicy, TrabajadoresController } from './trabajadores.controller.js';
 import { TrabajadoresPolicy } from './trabajadores.policy.js';
 import { TrabajadoresService } from './trabajadores.service.js';
 
 @Module({
-  imports: [AuditoriaModule],
+  imports: [AuditoriaModule, AuthModule],
   controllers: [TrabajadoresController],
-  providers: [TrabajadoresPolicy, TrabajadoresService],
+  providers: [TrabajadoresPolicy, TrabajadoresService, FichasPolicy, FichasService],
 })
 export class TrabajadoresModule {}

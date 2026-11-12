@@ -11,17 +11,26 @@ export function FormularioIngreso() {
   const [verClave, setVerClave] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+  // Segundo paso, solo si la cuenta tiene segundo factor activo.
+  const [pideCodigo, setPideCodigo] = useState(false);
+  const [codigo, setCodigo] = useState("");
 
   async function enviar(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setEnviando(true);
     try {
-      await api.ingresar(rut, clave);
+      const r = await api.ingresar(rut, clave, pideCodigo ? codigo : undefined);
+      if (r.requiereCodigo) {
+        setPideCodigo(true);
+        setEnviando(false);
+        return;
+      }
       router.replace("/");
       router.refresh();
     } catch (err) {
-      if (err instanceof ApiError && err.status === 401) setError("El RUT o la contraseña no coinciden. Revisa ambos e intenta de nuevo.");
+      if (err instanceof ApiError && err.status === 401 && pideCodigo) setError("El código no es correcto. Usa el que muestra ahora tu aplicación autenticadora.");
+      else if (err instanceof ApiError && err.status === 401) setError("El RUT o la contraseña no coinciden. Revisa ambos e intenta de nuevo.");
       else if (err instanceof ApiError && err.status === 423) setError("Tu cuenta quedó bloqueada 15 minutos por varios intentos fallidos. Si olvidaste tu contraseña, pídele una nueva a Personas.");
       else if (err instanceof ApiError && err.status === 429) setError("Demasiados intentos seguidos. Espera un minuto antes de volver a intentar.");
       else setError("No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.");
@@ -74,6 +83,26 @@ export function FormularioIngreso() {
         />
       </div>
 
+      {pideCodigo && (
+        <div>
+          <label htmlFor="codigo" className="block font-semibold">
+            Código de tu aplicación autenticadora
+          </label>
+          <input
+            id="codigo"
+            name="codigo"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            autoFocus
+            maxLength={6}
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ""))}
+            className="mt-2 w-full rounded-lg border-2 border-moana-200 bg-white px-4 py-3 text-lg tracking-[0.3em] tabular focus:border-moana-800 focus:outline-none"
+          />
+          <p className="mt-2 text-sm text-basalto-soft">Tu cuenta tiene acceso amplio y pide un segundo paso. El código cambia cada 30 segundos.</p>
+        </div>
+      )}
+
       {error && (
         <p role="alert" className="rounded-lg bg-toromiro-soft px-4 py-3 text-toromiro">
           {error}
@@ -82,13 +111,19 @@ export function FormularioIngreso() {
 
       <button
         type="submit"
-        disabled={enviando || !rut || !clave}
+        disabled={enviando || !rut || !clave || (pideCodigo && codigo.length !== 6)}
         className="w-full rounded-lg bg-moana-800 px-4 py-4 text-lg font-semibold text-white hover:bg-moana-900 disabled:bg-moana-200 disabled:text-moana-800/60"
       >
         {enviando ? "Ingresando…" : "Ingresar"}
       </button>
 
-      <p className="text-sm text-basalto-soft">¿Olvidaste tu contraseña? Pídele a Personas un código nuevo.</p>
+      <p className="text-sm text-basalto-soft">
+        ¿Primera vez o olvidaste tu contraseña? Pídele a Personas un código y{" "}
+        <a href="/activar" className="text-moana-800 underline underline-offset-4">
+          crea tu contraseña aquí
+        </a>
+        .
+      </p>
     </form>
   );
 }

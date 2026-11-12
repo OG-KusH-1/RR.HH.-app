@@ -20,6 +20,8 @@ const esquema = z.object({
   PORTAL_URL: z.string().url().default('http://localhost:3000'),
   /** "false" desactiva los avisos diarios de vencimiento (útil en pruebas). */
   ALERTAS_AUTOMATICAS: z.enum(['true', 'false']).default('true'),
+  /** Exige segundo factor a Personas, Gerencia y Administración (HU-04). Solo se apaga en demostraciones locales. */
+  SEGUNDO_FACTOR_OBLIGATORIO: z.enum(['true', 'false']).default('true'),
 });
 
 export type Env = z.infer<typeof esquema>;

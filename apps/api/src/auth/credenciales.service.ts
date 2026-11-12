@@ -8,13 +8,13 @@ export const MAX_INTENTOS = 5;
 export const BLOQUEO_MS = 15 * 60 * 1000;
 
 export type ResultadoVerificacion =
-  | { ok: true; usuario: UsuarioAutenticado }
+  | { ok: true; usuario: UsuarioAutenticado; totpSecretoCifrado: string | null; totpActivo: boolean }
   | { ok: false; motivo: 'credenciales' | 'bloqueado' };
 
 @Injectable()
 export class CredencialesService {
   constructor(
-    private readonly usuarios: UsuariosRepository,
+    readonly usuarios: UsuariosRepository,
     private readonly hasher: PasswordHasher,
   ) {}
 
@@ -42,10 +42,10 @@ export class CredencialesService {
     if (this.hasher.needsRehash(fila.hashClave)) {
       await this.usuarios.actualizarHash(fila.id, await this.hasher.hash(clave));
     }
-    await this.usuarios.registrarIngresoExitoso(fila.id);
-
-    const { hashClave: _h, intentosFallidos: _i, bloqueadoHasta: _b, ...usuario } = fila;
-    return { ok: true, usuario };
+    // El ingreso exitoso se registra en el controlador, después del segundo factor:
+    // si se registrara aquí, una clave correcta con código malo reiniciaría el contador de intentos.
+    const { hashClave: _h, intentosFallidos: _i, bloqueadoHasta: _b, totpSecretoCifrado, totpActivadoEn, ...usuario } = fila;
+    return { ok: true, usuario, totpSecretoCifrado, totpActivo: Boolean(totpActivadoEn && totpSecretoCifrado) };
   }
 }
 

@@ -4,13 +4,19 @@ import { Can } from '@nestjs/authorization';
 import { Throttle } from '@nestjs/throttler';
 import { z } from 'zod';
 import { AuditoriaService } from '../audit/auditoria.service.js';
-import { CredencialesService, CuentaBloqueadaException } from './credenciales.service.js';
+import { AccesoService } from './acceso.service.js';
+import { BLOQUEO_MS, CredencialesService, CuentaBloqueadaException, MAX_INTENTOS } from './credenciales.service.js';
 import type { UsuarioAutenticado } from './usuario-autenticado.js';
 
 const ingresoSchema = z.object({
   rut: z.string().min(1).max(15),
   clave: z.string().min(1).max(200),
+  /** Código de la aplicación autenticadora, solo si la cuenta tiene segundo factor. */
+  codigo: z.string().max(10).optional(),
 });
+const activarSchema = z.object({ rut: z.string().min(1).max(15), codigo: z.string().min(8).max(20), clave: z.string().min(1).max(200) });
+const claveSchema = z.object({ actual: z.string().min(1).max(200), nueva: z.string().min(1).max(200) });
+const codigoSchema = z.object({ codigo: z.string().regex(/^\d{6}$/, 'El código tiene 6 dígitos.') });
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +24,7 @@ export class AuthController {
     private readonly credenciales: CredencialesService,
     private readonly signIn: SignInService,
     private readonly auditoria: AuditoriaService,
+    private readonly acceso: AccesoService,
   ) {}
 
   @Public()
@@ -32,7 +39,17 @@ export class AuthController {
       throw new UnauthorizedException('RUT o contraseña incorrectos');
     }
     const { usuario } = resultado;
-    await this.signIn.signIn(usuario.id, { method: 'password', metadata: { ip } });
+    if (resultado.totpActivo) {
+      // Clave correcta: se pide el código sin crear sesión todavía.
+      if (!body.codigo) return { requiereCodigo: true };
+      if (!this.acceso.verificarAlIngresar(resultado.totpSecretoCifrado!, body.codigo)) {
+        await this.credenciales.usuarios.registrarIntentoFallido(usuario.id, MAX_INTENTOS, BLOQUEO_MS);
+        await this.auditoria.registrar({ usuario, accion: 'INGRESO_FALLIDO', entidad: 'usuario', ip, detalle: { motivo: 'segundo_factor' } });
+        throw new UnauthorizedException('El código no es correcto.');
+      }
+    }
+    await this.credenciales.usuarios.registrarIngresoExitoso(usuario.id);
+    await this.signIn.signIn(usuario.id, { method: 'password', metadata: { ip, segundoFactor: resultado.totpActivo } });
     await this.auditoria.registrar({ usuario, accion: 'INGRESO', entidad: 'usuario', entidadId: usuario.id, ip });
     return { usuario };
   }
@@ -47,7 +64,38 @@ export class AuthController {
 
   @Can.Anyone()
   @Get('yo')
-  yo(@CurrentUser() usuario: UsuarioAutenticado) {
-    return { usuario };
+  async yo(@CurrentUser() usuario: UsuarioAutenticado) {
+    return { usuario, segundoFactor: await this.acceso.estado(usuario) };
+  }
+
+  /** Pública: crea la primera contraseña con el código de invitación (HU-02). */
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  @Post('activar')
+  @HttpCode(200)
+  activar(@Body({ schema: activarSchema }) body: z.infer<typeof activarSchema>, @Ip() ip: string) {
+    return this.acceso.activar(body.rut, body.codigo, body.clave, ip);
+  }
+
+  @Can.Anyone()
+  @Post('clave')
+  @HttpCode(200)
+  cambiarClave(@CurrentUser() usuario: UsuarioAutenticado, @Body({ schema: claveSchema }) body: z.infer<typeof claveSchema>, @Ip() ip: string) {
+    return this.acceso.cambiarClave(usuario, body.actual, body.nueva, ip);
+  }
+
+  @Can.Anyone()
+  @Post('2fa/iniciar')
+  @HttpCode(200)
+  iniciar2fa(@CurrentUser() usuario: UsuarioAutenticado) {
+    return this.acceso.iniciar(usuario);
+  }
+
+  @Can.Anyone()
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Post('2fa/confirmar')
+  @HttpCode(200)
+  confirmar2fa(@CurrentUser() usuario: UsuarioAutenticado, @Body({ schema: codigoSchema }) body: z.infer<typeof codigoSchema>, @Ip() ip: string) {
+    return this.acceso.confirmar(usuario, body.codigo, ip);
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { api, ApiError, type Usuario } from "@/lib/api";
+import { api, ApiError, type EstadoSegundoFactor, type Usuario } from "@/lib/api";
+import { ActivarSegundoFactor } from "./segundo-factor";
 
 const SesionContext = createContext<Usuario | null>(null);
 
@@ -14,12 +15,16 @@ export function useUsuario(): Usuario {
 export function ProveedorSesion({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const [segundoFactor, setSegundoFactor] = useState<EstadoSegundoFactor | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     api
       .yo()
-      .then(({ usuario }) => setUsuario(usuario))
+      .then(({ usuario, segundoFactor }) => {
+        setUsuario(usuario);
+        setSegundoFactor(segundoFactor);
+      })
       .catch((e) => {
         if (e instanceof ApiError && e.status === 401) router.replace("/ingresar");
         else setError(true);
@@ -44,6 +49,23 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     return (
       <main className="min-h-dvh grid place-items-center" aria-busy="true">
         <p className="text-basalto-soft">Cargando tu portal…</p>
+      </main>
+    );
+  }
+
+  // La API ya bloquea todo hasta activar el segundo factor; aquí se muestra cómo hacerlo en vez de errores.
+  if (segundoFactor?.obligatorio && !segundoFactor.activo) {
+    return (
+      <main className="min-h-dvh px-5 py-12">
+        <div className="mx-auto max-w-lg">
+          <h1 className="text-2xl font-bold">Activa tu segundo factor</h1>
+          <p className="mt-2 text-basalto-soft">
+            {usuario.nombres}, tu rol ve datos de toda la empresa. Antes de continuar, protege tu cuenta con un código del celular: si alguien obtiene tu contraseña, no podrá entrar.
+          </p>
+          <div className="mt-8">
+            <ActivarSegundoFactor alActivar={() => setSegundoFactor({ ...segundoFactor, activo: true })} />
+          </div>
+        </div>
       </main>
     );
   }

@@ -11,7 +11,9 @@ export default function MiFichaPage() {
   return (
     <div className="max-w-2xl">
       <h1 className="text-2xl lg:text-3xl font-bold">Mi ficha</h1>
-      <p className="mt-2 text-basalto-soft">Si algún dato está mal, avísale a Personas para corregirlo.</p>
+      <p className="mt-2 text-basalto-soft">
+        Si algún dato está mal, <a href="/privacidad" className="text-moana-800 underline underline-offset-4">pide la corrección aquí</a>.
+      </p>
       <div className="mt-8">
         {error ? <Aviso texto={error} /> : datos ? (
           <>

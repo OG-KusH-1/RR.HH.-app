@@ -26,6 +26,13 @@ export default function EquipoPage() {
         {esJefatura ? "Las personas que te reportan directamente." : "Todas las personas activas de la empresa."}
       </p>
 
+      {usuario.rol === "PERSONAS" && (
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link href="/equipo/nueva" className="rounded-lg bg-moana-800 px-5 py-2.5 font-semibold text-white hover:bg-moana-900">Nueva ficha</Link>
+          <Link href="/equipo/importar" className="rounded-lg border border-moana-800 px-5 py-2.5 font-semibold text-moana-800 hover:bg-moana-50">Cargar desde planilla</Link>
+        </div>
+      )}
+
       <label htmlFor="buscar" className="sr-only">
         Buscar por nombre, cargo o sede
       </label>
