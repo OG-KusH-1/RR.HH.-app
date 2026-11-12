@@ -10,6 +10,9 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { AusenciasModule } from './ausencias/ausencias.controller.js';
 import { AuthModule } from './auth/auth.module.js';
 import { AvisosModule } from './avisos/avisos.module.js';
+import { CertificadosModule } from './certificados/certificados.module.js';
+import { DocumentosModule } from './documentos/documentos.module.js';
+import { PanelModule } from './panel/panel.module.js';
 import { validarEnv, type Env } from './config/env.js';
 import { relations } from './db/relations.js';
 import { TrabajadoresModule } from './employees/trabajadores.module.js';
@@ -46,6 +49,9 @@ import { PrevisionalModule } from './previsional/previsional.module.js';
     PrevisionalModule,
     AvisosModule,
     AusenciasModule,
+    DocumentosModule,
+    CertificadosModule,
+    PanelModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

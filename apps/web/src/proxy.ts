@@ -6,9 +6,10 @@ import { NextResponse, type NextRequest } from "next/server";
  */
 export function proxy(request: NextRequest) {
   const tieneSesion = request.cookies.has("__Host-sid");
-  const enIngreso = request.nextUrl.pathname.startsWith("/ingresar");
+  // Páginas públicas: ingreso, activación de cuenta con invitación y verificación de certificados.
+  const publica = ["/ingresar", "/activar", "/verificar"].some((p) => request.nextUrl.pathname.startsWith(p));
 
-  if (!tieneSesion && !enIngreso) {
+  if (!tieneSesion && !publica) {
     return NextResponse.redirect(new URL("/ingresar", request.url));
   }
   return NextResponse.next();

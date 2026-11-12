@@ -10,7 +10,12 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { calcularDv } from '../common/rut.js';
 import type { Rol } from '../common/roles.js';
 import { TRAMOS_IMPUESTO_2026 } from '../previsional/liquidacion/tramos-impuesto.js';
+import { createHash, randomUUID } from 'node:crypto';
+import { rm } from 'node:fs/promises';
 import { calcularSaldo } from '../ausencias/saldo-vacaciones.js';
+import { cifrar, claveDesdeBase64 } from '../common/cifrado.js';
+import { generarPdf } from '../common/pdf.js';
+import { AlmacenLocal } from '../documentos/almacen.js';
 import { contarDiasHabiles } from '../ausencias/calendario-laboral.js';
 import {
   afps,
@@ -345,6 +350,7 @@ async function main() {
   }
 
   await sembrarAusencias(empresa.id);
+  await sembrarDocumentos(empresa.id);
 
   console.log(`Empresa: ${empresa.razonSocial}, ${indice} trabajadores.\n`);
   console.log(`Usuarios de demostración (contraseña: ${CLAVE_DEMO}):`);
@@ -429,6 +435,86 @@ async function sembrarAusencias(empresaId: string) {
         enlace: `/ausencias/${s.id}`,
       });
     }
+  }
+}
+
+const TIPOS_DOCUMENTO = [
+  { codigo: 'CONTRATO', nombre: 'Contrato de trabajo', conVencimiento: false, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'ANEXO', nombre: 'Anexo de contrato', conVencimiento: false, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'CEDULA', nombre: 'Cédula de identidad', conVencimiento: true, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'CERT_AFP', nombre: 'Certificado de afiliación AFP', conVencimiento: false, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'CERT_SALUD', nombre: 'Certificado de Fonasa o Isapre', conVencimiento: false, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'LICENCIA_CONDUCIR', nombre: 'Licencia de conducir', conVencimiento: true, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'EXAMEN_SALUD', nombre: 'Examen de salud ocupacional', conVencimiento: true, visibilidadPorDefecto: 'RESERVADO' as const },
+  { codigo: 'REGLAMENTO', nombre: 'Recepción del reglamento interno', conVencimiento: false, visibilidadPorDefecto: 'TRABAJADOR' as const },
+  { codigo: 'LICENCIA_MEDICA', nombre: 'Licencia médica', conVencimiento: false, visibilidadPorDefecto: 'RESERVADO' as const },
+  { codigo: 'OTRO', nombre: 'Otro documento', conVencimiento: false, visibilidadPorDefecto: 'INTERNO' as const },
+];
+
+/**
+ * Carpetas digitales de ejemplo: PDF reales, cifrados como en producción.
+ * A propósito quedan carpetas incompletas y documentos por vencer, para que el reporte de
+ * faltantes y los avisos tengan algo que mostrar.
+ */
+async function sembrarDocumentos(empresaId: string) {
+  const clave = claveDesdeBase64(process.env.CLAVE_CIFRADO!);
+  const dir = process.env.ALMACEN_DIR ?? 'almacen';
+  // El seed borra la base completa; sin esto quedarían archivos cifrados huérfanos en el almacén.
+  if (process.env.NODE_ENV === 'production') throw new Error('El seed de demostración no se ejecuta en producción.');
+  await rm(dir, { recursive: true, force: true });
+  const almacen = new AlmacenLocal(dir);
+  const tipos = await db.insert(tiposDocumento).values(TIPOS_DOCUMENTO).returning();
+  const tipo = (c: string) => tipos.find((t) => t.codigo === c)!;
+  await db.insert(documentosRequeridos).values([
+    ...['CONTRATO', 'CEDULA', 'CERT_AFP', 'CERT_SALUD', 'REGLAMENTO'].map((c) => ({ empresaId, cargo: '*', tipoId: tipo(c).id })),
+    ...['Chofer repartidor', 'Chofer'].map((cargo) => ({ empresaId, cargo, tipoId: tipo('LICENCIA_CONDUCIR').id })),
+    ...['Bodeguero', 'Operario de despacho', 'Operario de recepción'].map((cargo) => ({ empresaId, cargo, tipoId: tipo('EXAMEN_SALUD').id })),
+  ]);
+
+  const lista = await db.select().from(trabajadores).where(eq(trabajadores.empresaId, empresaId)).orderBy(trabajadores.rut);
+  const filas: (typeof documentos.$inferInsert)[] = [];
+  const mas = (dias: number) => new Date(Date.UTC(2026, 10, 12 + dias)).toISOString().slice(0, 10);
+
+  async function agregar(t: Trabajador, codigo: string, venceEl: string | null = null) {
+    const ti = tipo(codigo);
+    const pdf = await generarPdf({
+      encabezado: 'Comercial Te Moana SpA',
+      subencabezado: 'Documento de demostración generado por Tangata',
+      titulo: ti.nombre,
+      parrafos: [`Documento ficticio de ${t.nombres} ${t.apellidos}, ${t.cargo}.`, 'Este archivo existe para mostrar la carpeta digital, el cifrado y los avisos de vencimiento.'],
+      datos: [['RUT', t.rut], ['Fecha de ingreso', t.fechaIngreso], ...(venceEl ? ([['Vence', venceEl]] as [string, string][]) : [])],
+    });
+    const claveAlmacen = `${empresaId}/${randomUUID()}`;
+    await almacen.guardar(claveAlmacen, cifrar(pdf, clave));
+    filas.push({
+      empresaId,
+      trabajadorId: t.id,
+      tipoId: ti.id,
+      nombreArchivo: `${ti.codigo.toLowerCase()}-${t.apellidos.split(' ')[0].toLowerCase()}.pdf`,
+      mime: 'application/pdf',
+      tamano: pdf.length,
+      claveAlmacen,
+      sha256: createHash('sha256').update(pdf).digest('hex'),
+      venceEl,
+      visibilidad: ti.visibilidadPorDefecto,
+    });
+  }
+
+  for (const [i, t] of lista.entries()) {
+    if (i % 11 !== 5) await agregar(t, 'CONTRATO');
+    if (i % 6 !== 2) await agregar(t, 'CEDULA', mas(200 + i * 37));
+    if (i % 5 !== 1) await agregar(t, 'CERT_AFP');
+    if (i % 4 !== 3) await agregar(t, 'CERT_SALUD');
+    if (i % 3 !== 0) await agregar(t, 'REGLAMENTO');
+    if (t.cargo.startsWith('Chofer')) await agregar(t, 'LICENCIA_CONDUCIR', mas([12, 27, -3, 140, 400][i % 5]));
+    if (['Bodeguero', 'Operario de despacho'].includes(t.cargo) && i % 2 === 0) await agregar(t, 'EXAMEN_SALUD', mas([4, 45, 300][i % 3]));
+  }
+  await db.insert(documentos).values(filas);
+
+  // Contratos a plazo fijo con fecha de término: algunos vencen pronto y requieren decisión.
+  const plazoFijo = lista.filter((t) => t.tipoContrato === 'PLAZO_FIJO');
+  for (const [i, t] of plazoFijo.entries()) {
+    await db.update(trabajadores).set({ fechaTerminoContrato: mas([9, 24, 52, 95, 160][i % 5]) }).where(eq(trabajadores.id, t.id));
   }
 }
 

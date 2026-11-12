@@ -10,3 +10,6 @@ coverage/
 .terraform/
 *.tfstate*
 *.tsbuildinfo
+
+# Archivos cifrados del almacén local (documentos de trabajadores). Nunca al repositorio.
+almacen/

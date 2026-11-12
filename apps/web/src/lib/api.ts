@@ -243,6 +243,106 @@ export interface DatosSolicitud {
   trabajadorId?: string;
 }
 
+// ---------------------------------------------------------------- documentos
+
+export type Visibilidad = "TRABAJADOR" | "INTERNO" | "RESERVADO";
+
+export interface TipoDocumento {
+  id: string;
+  codigo: string;
+  nombre: string;
+  conVencimiento: boolean;
+  visibilidadPorDefecto: Visibilidad;
+}
+
+export interface DocumentoItem {
+  id: string;
+  nombreArchivo: string;
+  mime: string;
+  tamano: number;
+  venceEl: string | null;
+  visibilidad: Visibilidad;
+  notas: string | null;
+  creadoEn: string;
+  tipo: string;
+  tipoCodigo: string;
+}
+
+export interface CarpetaDocumentos {
+  trabajador: { id: string; nombres: string; apellidos: string };
+  documentos: DocumentoItem[];
+  puedeSubir: boolean;
+}
+
+export interface Vencimiento {
+  clase: "DOCUMENTO" | "CONTRATO";
+  id: string;
+  trabajadorId: string;
+  nombres: string;
+  apellidos: string;
+  sede: string;
+  que: string;
+  vence: string;
+  diasRestantes: number;
+  requiereDecision: boolean;
+}
+
+export interface ReporteFaltantes {
+  sedes: { sede: string; personas: number; incompletas: number }[];
+  personas: { id: string; nombres: string; apellidos: string; cargo: string; sede: string; faltan: string[] }[];
+  totalRequisitos: number;
+  totalPersonas: number;
+}
+
+export interface Requisito {
+  id: string;
+  cargo: string;
+  tipoId: string;
+  tipo: string;
+}
+
+export interface DatosSubida {
+  trabajadorId: string;
+  tipoId: string;
+  nombreArchivo: string;
+  contenidoBase64: string;
+  venceEl?: string | null;
+  visibilidad?: Visibilidad;
+  notas?: string;
+}
+
+// ---------------------------------------------------------------- certificados y panel
+
+export interface Certificado {
+  id: string;
+  codigo: string;
+  tipo: string;
+  emitidoEn: string;
+  revocadoEn: string | null;
+}
+
+export type Verificacion =
+  | { valido: false }
+  | { valido: true; revocado: boolean; codigo: string; tipo: string; empresa: string; nombre: string; rut: string; cargo: string; fechaIngreso: string; tipoContrato: string; emitido: string };
+
+export interface Panel {
+  periodo: string;
+  hoy: string;
+  totales: { dotacion: number; ausentesHoy: number; diasAusenciaMes: number; vacacionesAcumuladas: number };
+  porSede: { sedeId: string; sede: string; dotacion: number; indefinidos: number; plazoFijo: number; ausentesHoy: number; diasAusenciaMes: number; vacacionesAcumuladas: number }[];
+  ausenciasPorTipo: { tipo: string; dias: number }[];
+  alertas: {
+    solicitudesPendientes: number;
+    pendientesAtrasadas: number;
+    vencimientos30Dias: number;
+    vencidos: number;
+    contratosPorDecidir: number;
+    carpetasIncompletas: number;
+    acumulanMasDeDosPeriodos: number;
+    solicitudesDatosAbiertas: number;
+  };
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -307,4 +407,22 @@ export const api = {
   avisosNoLeidos: () => solicitar<{ total: number }>("/avisos/no-leidos"),
   leerAviso: (id: string) => solicitar<void>(`/avisos/${id}/leer`, { method: "POST" }),
   leerTodos: () => solicitar<void>("/avisos/leer-todos", { method: "POST" }),
+  // Documentos
+  tiposDocumento: () => solicitar<TipoDocumento[]>("/documentos/tipos"),
+  misDocumentos: () => solicitar<CarpetaDocumentos>("/documentos/mios"),
+  documentosDe: (id: string) => solicitar<CarpetaDocumentos>(`/documentos/trabajador/${id}`),
+  subirDocumento: (d: DatosSubida) => solicitar<DocumentoItem>("/documentos", { method: "POST", body: JSON.stringify(d) }),
+  enlaceDocumento: (id: string) => solicitar<{ url: string; expiraEnMinutos: number }>(`/documentos/${id}/enlace`, { method: "POST" }),
+  eliminarDocumento: (id: string, motivo: string) => solicitar<void>(`/documentos/${id}`, { method: "DELETE", body: JSON.stringify({ motivo }) }),
+  vencimientos: (dias = 60) => solicitar<{ hoy: string; dias: number; items: Vencimiento[] }>(`/documentos/vencimientos?dias=${dias}`),
+  revisarVencimientos: () => solicitar<{ avisosCreados: number }>("/documentos/vencimientos/revisar", { method: "POST" }),
+  faltantes: () => solicitar<ReporteFaltantes>("/documentos/faltantes"),
+  requisitos: () => solicitar<Requisito[]>("/documentos/requeridos"),
+  agregarRequisito: (cargo: string, tipoId: string) => solicitar<void>("/documentos/requeridos", { method: "POST", body: JSON.stringify({ cargo, tipoId }) }),
+  quitarRequisito: (id: string) => solicitar<void>(`/documentos/requeridos/${id}`, { method: "DELETE" }),
+  // Certificados y panel
+  emitirCertificado: (trabajadorId?: string) => solicitar<Certificado>("/certificados", { method: "POST", body: JSON.stringify({ trabajadorId }) }),
+  misCertificados: () => solicitar<Certificado[]>("/certificados/mios"),
+  verificarCertificado: (codigo: string) => solicitar<Verificacion>(`/certificados/verificar/${encodeURIComponent(codigo)}`),
+  panel: (mes?: string) => solicitar<Panel>(`/panel${mes ? `?mes=${mes}` : ""}`),
 };
