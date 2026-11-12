@@ -26,6 +26,65 @@ export interface Trabajador {
   zonaHoraria: string;
   jefaturaId: string | null;
   telefono?: string | null;
+  afpId?: string | null;
+  afp?: string | null;
+  saludId?: string | null;
+  salud?: string | null;
+  saludTipo?: "FONASA" | "ISAPRE" | null;
+  planIsapreUf?: number | null;
+  sueldoBase?: number | null;
+  puedeVerRemuneracion?: boolean;
+}
+
+export interface OpcionAfp {
+  id: string;
+  codigo: string;
+  nombre: string;
+  comision: number | null;
+  vigenteDesde: string | null;
+  fuente: string | null;
+}
+
+export interface OpcionSalud {
+  id: string;
+  codigo: string;
+  nombre: string;
+  tipo: "FONASA" | "ISAPRE";
+}
+
+export interface Indicadores {
+  periodo: string;
+  estado: "BORRADOR" | "CONFIRMADO";
+  uf: number;
+  utm: number;
+  ingresoMinimo: number;
+  topeImponibleAfpUf: number;
+  topeImponibleCesantiaUf: number;
+  tasaSis: number;
+  tasaEmpleadorReforma: number;
+  tasaAccidentes: number;
+  fuentes: Record<string, { fuente: string; consultadoEn: string }>;
+  confirmadoEn: string | null;
+}
+
+export interface Linea {
+  codigo: string;
+  concepto: string;
+  monto: number;
+  detalle: string;
+}
+
+export interface RespuestaLiquidacion {
+  trabajador: { id: string; nombres: string; apellidos: string };
+  liquidacion: {
+    periodo: string;
+    haberes: Linea[];
+    descuentos: Linea[];
+    aportesEmpleador: Linea[];
+    totales: { imponible: number; noImponible: number; tributable: number; descuentos: number; liquido: number; aportesEmpleador: number; costoEmpresa: number };
+  };
+  limitaciones: string[];
+  indicadores: { periodo: string; uf: number; utm: number; confirmadoEn: string | null };
 }
 
 export interface ResumenSede {
@@ -68,4 +127,15 @@ export const api = {
   trabajadores: () => solicitar<Trabajador[]>("/trabajadores"),
   trabajador: (id: string) => solicitar<Trabajador>(`/trabajadores/${id}`),
   resumen: () => solicitar<ResumenSede[]>("/trabajadores/resumen"),
+  opcionesPrevision: () => solicitar<{ afps: OpcionAfp[]; salud: OpcionSalud[] }>("/previsional/opciones"),
+  actualizarPrevision: (id: string, datos: { afpId?: string | null; saludId?: string | null; planIsapreUf?: number | null; sueldoBase?: number | null }) =>
+    solicitar<{ ok: true }>(`/trabajadores/${id}/prevision`, { method: "PATCH", body: JSON.stringify(datos) }),
+  indicadores: () => solicitar<{ periodoActual: string; meses: Indicadores[] }>("/previsional/indicadores"),
+  sincronizarIndicadores: (periodo: string) =>
+    solicitar<{ indicadores: Indicadores; pendientes: string[] }>(`/previsional/indicadores/${periodo}/sincronizar`, { method: "POST" }),
+  corregirIndicadores: (periodo: string, cambios: Partial<Indicadores>) =>
+    solicitar<Indicadores>(`/previsional/indicadores/${periodo}`, { method: "PATCH", body: JSON.stringify(cambios) }),
+  confirmarIndicadores: (periodo: string) => solicitar<Indicadores>(`/previsional/indicadores/${periodo}/confirmar`, { method: "POST" }),
+  liquidacion: (id: string, params: Record<string, string | number>) =>
+    solicitar<RespuestaLiquidacion>(`/trabajadores/${id}/liquidacion?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`),
 };

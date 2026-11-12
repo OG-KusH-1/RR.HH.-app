@@ -69,3 +69,13 @@ export function diferenciaHoras(zonaA: string, zonaB: string, fecha: Date): numb
   };
   return offset(zonaB) - offset(zonaA);
 }
+
+export const pesos = (n: number) => `$${Math.round(n).toLocaleString("es-CL")}`;
+export const porcentaje = (n: number) => `${n.toLocaleString("es-CL", { maximumFractionDigits: 3 })} %`;
+
+const MESES_CORTOS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+/** "2026-11" → "noviembre de 2026". */
+export function nombrePeriodo(periodo: string): string {
+  const [a, m] = periodo.split("-").map(Number);
+  return `${MESES_CORTOS[m - 1]} de ${a}`;
+}

@@ -307,6 +307,8 @@ Una historia está terminada cuando:
 
 ## E10. Remuneraciones (Fase 3)
 
+**Estado (2026-11-11): HU-28 y HU-29 implementadas en modo referencia.** Diseño en [10. Liquidaciones](10-liquidaciones.md).
+
 Las fórmulas de una liquidación son deterministas: con parámetros correctos, el resultado es correcto. El riesgo real está en **mantener los parámetros al día** (UF, UTM, tramos de impuesto, topes, tasas de cada AFP y planes de Isapre) y en los casos de borde (licencias parciales, ingresos a mitad de mes, horas extra). Por eso entra en la fase 3 y en modo de referencia antes de reemplazar al contador.
 
 ### HU-28. Parámetros previsionales

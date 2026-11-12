@@ -3,11 +3,17 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Aviso, Cargando, useDatos } from "@/components/datos";
 import { Ficha } from "@/components/ficha";
+import { Prevision } from "@/components/prevision";
+import { useUsuario } from "@/components/sesion";
+import { useState } from "react";
 import { api } from "@/lib/api";
 
 export default function FichaTrabajadorPage() {
   const { id } = useParams<{ id: string }>();
-  const { datos, error } = useDatos(() => api.trabajador(id), [id]);
+  const usuario = useUsuario();
+  // Cambiar `version` vuelve a pedir la ficha después de guardar la previsión.
+  const [version, setVersion] = useState(0);
+  const { datos, error } = useDatos(() => api.trabajador(id), [id, version]);
   return (
     <div className="max-w-2xl">
       <Link href="/equipo" className="text-moana-800 underline underline-offset-4">
@@ -23,6 +29,7 @@ export default function FichaTrabajadorPage() {
           <p className="mt-2 text-basalto-soft">Esta consulta queda registrada, como toda vista de una ficha ajena.</p>
           <div className="mt-8">
             <Ficha t={datos} />
+            <Prevision t={datos} editable={usuario.rol === "PERSONAS"} alGuardar={() => setVersion((v) => v + 1)} />
           </div>
         </>
       )}

@@ -47,6 +47,16 @@ const destinos: Destino[] = [
     ),
   },
   {
+    href: "/indicadores",
+    texto: "Indicadores",
+    roles: ["PERSONAS", "GERENCIA", "ADMIN"],
+    icono: (
+      <svg viewBox="0 0 24 24" className="size-6" aria-hidden="true">
+        <path {...trazo} d="M4 19h16M7 16V10M12 16V5M17 16v-4" />
+      </svg>
+    ),
+  },
+  {
     href: "/empresa",
     texto: "Sedes",
     roles: ["PERSONAS", "GERENCIA", "ADMIN"],

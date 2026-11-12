@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthenticationModule } from '@nestjs/authentication';
 import { AuthorizationModule } from '@nestjs/authorization';
 import { DrizzleModule } from '@nestjs/drizzle';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { AuthModule } from './auth/auth.module.js';
@@ -11,6 +12,7 @@ import { validarEnv, type Env } from './config/env.js';
 import { relations } from './db/relations.js';
 import { TrabajadoresModule } from './employees/trabajadores.module.js';
 import { HealthController } from './health/health.controller.js';
+import { PrevisionalModule } from './previsional/previsional.module.js';
 
 @Module({
   imports: [
@@ -36,8 +38,10 @@ import { HealthController } from './health/health.controller.js';
     }),
     AuthorizationModule.forRoot(),
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
+    ScheduleModule.forRoot(),
     AuthModule,
     TrabajadoresModule,
+    PrevisionalModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -6,6 +6,10 @@ const esquema = z.object({
   DATABASE_URL: z.string().url(),
   /** Orígenes del frontend que pueden usar la cookie de sesión. */
   WEB_ORIGIN: z.string().url().default('http://localhost:3000'),
+  /** Clave de la API de la CMF para UF y UTM oficiales. Sin ella se usa mindicador.cl como respaldo. */
+  CMF_API_KEY: z.string().optional(),
+  /** "false" desactiva la sincronización diaria de indicadores (útil en pruebas). */
+  SINCRONIZACION_AUTOMATICA: z.enum(['true', 'false']).default('true'),
 });
 
 export type Env = z.infer<typeof esquema>;

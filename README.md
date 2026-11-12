@@ -30,7 +30,9 @@ Un portal web donde cada trabajador resuelve solo sus trámites frecuentes, las 
 - Reportes para gerencia.
 - Fase 2: asistente de IA que responde dudas sobre el reglamento interno.
 
-Lo que **no** hace, por diseño: no calcula remuneraciones, no reemplaza el registro legal de asistencia y no toma decisiones sobre personas. Las razones están en los [ADR](docs/adr/).
+- Liquidación de referencia con indicadores previsionales que se actualizan solos y Personas confirma cada mes.
+
+Lo que **no** hace, por diseño: no reemplaza la liquidación oficial del contador (todavía), no reemplaza el registro legal de asistencia y no toma decisiones sobre personas. Las razones están en los [ADR](docs/adr/).
 
 ## Documentación
 
@@ -45,6 +47,9 @@ Lo que **no** hace, por diseño: no calcula remuneraciones, no reemplaza el regi
 | [07. Plan del MVP](docs/07-plan-mvp.md) | Sprints, piloto, métricas y riesgos |
 | [08. Marco legal](docs/08-marco-legal.md) | Cumplimiento en Chile |
 | [09. Propuesta comercial](docs/09-propuesta-comercial.md) | El documento que se entrega al cliente |
+| [10. Liquidaciones](docs/10-liquidaciones.md) | Cálculo de referencia, fuentes de datos y fórmulas |
+| [11. Plan con Antigravity](docs/11-plan-antigravity.md) | Qué tareas delegar a Gemini y cómo revisarlas |
+| [AGENTS.md](AGENTS.md) | Reglas para agentes de IA y personas nuevas |
 | [Decisiones de arquitectura (ADR)](docs/adr/) | Por qué se eligió cada cosa |
 
 ## Stack

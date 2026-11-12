@@ -1,0 +1,1024 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "f665dc1e-accf-4f0d-ab98-383565b32244",
+  "prevIds": [
+    "89136560-c1ae-4e37-bed1-4c18abbb7de0"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "estado_indicadores"
+      ],
+      "writes": [
+        "s|enum|public.estado_indicadores",
+        "n|enum|public.estado_indicadores",
+        "e|enum|public.estado_indicadores",
+        "n|type|public.estado_indicadores"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "tipo_salud"
+      ],
+      "writes": [
+        "s|enum|public.tipo_salud",
+        "n|enum|public.tipo_salud",
+        "e|enum|public.tipo_salud",
+        "n|type|public.tipo_salud"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "afps"
+      ],
+      "writes": [
+        "s|tbl|public.afps",
+        "n|tbl|public.afps",
+        "e|tbl|public.afps",
+        "n|rel|public.afps",
+        "n|type|public.afps",
+        "n|rel|public.afps_pkey",
+        "n|rel|public.afps_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "indicadores_mensuales"
+      ],
+      "writes": [
+        "s|tbl|public.indicadores_mensuales",
+        "n|tbl|public.indicadores_mensuales",
+        "e|tbl|public.indicadores_mensuales",
+        "n|rel|public.indicadores_mensuales",
+        "n|type|public.indicadores_mensuales",
+        "n|rel|public.indicadores_mensuales_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.estado_indicadores"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "instituciones_salud"
+      ],
+      "writes": [
+        "s|tbl|public.instituciones_salud",
+        "n|tbl|public.instituciones_salud",
+        "e|tbl|public.instituciones_salud",
+        "n|rel|public.instituciones_salud",
+        "n|type|public.instituciones_salud",
+        "n|rel|public.instituciones_salud_pkey",
+        "n|rel|public.instituciones_salud_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.tipo_salud"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasas_afp"
+      ],
+      "writes": [
+        "s|tbl|public.tasas_afp",
+        "n|tbl|public.tasas_afp",
+        "e|tbl|public.tasas_afp",
+        "n|rel|public.tasas_afp",
+        "n|type|public.tasas_afp",
+        "n|rel|public.tasas_afp_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "sueldo_base"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.sueldo_base",
+        "n|col|public.trabajadores.sueldo_base",
+        "e|col|public.trabajadores.sueldo_base"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "afp_id"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.afp_id",
+        "n|col|public.trabajadores.afp_id",
+        "e|col|public.trabajadores.afp_id"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "salud_id"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.salud_id",
+        "n|col|public.trabajadores.salud_id",
+        "e|col|public.trabajadores.salud_id"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "plan_isapre_uf"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.plan_isapre_uf",
+        "n|col|public.trabajadores.plan_isapre_uf",
+        "e|col|public.trabajadores.plan_isapre_uf"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "indicadores_mensuales"
+      ],
+      "writes": [
+        "s|fk|public.indicadores_mensuales.indicadores_mensuales_confirmado_por_usuarios_id_fkey",
+        "n|fk|public.indicadores_mensuales.indicadores_mensuales_confirmado_por_usuarios_id_fkey",
+        "e|fk|public.indicadores_mensuales.indicadores_mensuales_confirmado_por_usuarios_id_fkey",
+        "n|con|public.indicadores_mensuales.indicadores_mensuales_confirmado_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.indicadores_mensuales",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.indicadores_mensuales.confirmado_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "tasas_afp"
+      ],
+      "writes": [
+        "s|fk|public.tasas_afp.tasas_afp_afp_id_afps_id_fkey",
+        "n|fk|public.tasas_afp.tasas_afp_afp_id_afps_id_fkey",
+        "e|fk|public.tasas_afp.tasas_afp_afp_id_afps_id_fkey",
+        "n|con|public.tasas_afp.tasas_afp_afp_id_afps_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.tasas_afp",
+        "n|sch|public",
+        "n|tbl|public.afps",
+        "n|sch|public",
+        "n|col|public.tasas_afp.afp_id",
+        "n|col|public.afps.id",
+        "e|uniqueness|public.afps.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "trabajadores"
+      ],
+      "writes": [
+        "s|fk|public.trabajadores.trabajadores_afp_id_afps_id_fkey",
+        "n|fk|public.trabajadores.trabajadores_afp_id_afps_id_fkey",
+        "e|fk|public.trabajadores.trabajadores_afp_id_afps_id_fkey",
+        "n|con|public.trabajadores.trabajadores_afp_id_afps_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|tbl|public.afps",
+        "n|sch|public",
+        "n|col|public.trabajadores.afp_id",
+        "n|col|public.afps.id",
+        "e|uniqueness|public.afps.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "trabajadores"
+      ],
+      "writes": [
+        "s|fk|public.trabajadores.trabajadores_salud_id_instituciones_salud_id_fkey",
+        "n|fk|public.trabajadores.trabajadores_salud_id_instituciones_salud_id_fkey",
+        "e|fk|public.trabajadores.trabajadores_salud_id_instituciones_salud_id_fkey",
+        "n|con|public.trabajadores.trabajadores_salud_id_instituciones_salud_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|tbl|public.instituciones_salud",
+        "n|sch|public",
+        "n|col|public.trabajadores.salud_id",
+        "n|col|public.instituciones_salud.id",
+        "e|uniqueness|public.instituciones_salud.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "afps",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "indicadores_mensuales",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "instituciones_salud",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tasas_afp",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "estado_indicadores",
+        "values": [
+          "BORRADOR",
+          "CONFIRMADO"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tipo_salud",
+        "values": [
+          "FONASA",
+          "ISAPRE"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "afps",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "afps",
+        "name": "codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "afps",
+        "name": "nombre",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "periodo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "estado",
+        "type": "estado_indicadores",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'BORRADOR'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "uf",
+        "type": "numeric(10,2)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "utm",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "ingreso_minimo",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tope_imponible_afp_uf",
+        "type": "numeric(6,2)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tope_imponible_cesantia_uf",
+        "type": "numeric(6,2)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tasa_sis",
+        "type": "numeric(5,3)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tasa_empleador_reforma",
+        "type": "numeric(5,3)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tasa_accidentes",
+        "type": "numeric(5,3)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "tramos_impuesto",
+        "type": "jsonb",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "fuentes",
+        "type": "jsonb",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "confirmado_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "confirmado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "actualizado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "nombre",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "tipo",
+        "type": "tipo_salud",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "afp_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "vigente_desde",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "comision",
+        "type": "numeric(6,4)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "fuente",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "registrado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "sueldo_base",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "afp_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "salud_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "plan_isapre_uf",
+        "type": "numeric(8,4)",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "indicadores_mensuales_confirmado_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "confirmado_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "tasas_afp_afp_id_afps_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "afp_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "afps",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "trabajadores_afp_id_afps_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "afp_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "afps",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "trabajadores_salud_id_instituciones_salud_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "salud_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "instituciones_salud",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tasas_afp",
+        "name": "tasas_afp_pkey",
+        "columns": [
+          "afp_id",
+          "vigente_desde"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "afps",
+        "name": "afps_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "indicadores_mensuales",
+        "name": "indicadores_mensuales_pkey",
+        "columns": [
+          "periodo"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "instituciones_salud_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "afps",
+        "name": "afps_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "instituciones_salud",
+        "name": "instituciones_salud_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    }
+  ]
+}
