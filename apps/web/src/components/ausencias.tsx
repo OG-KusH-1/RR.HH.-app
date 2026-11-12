@@ -78,7 +78,8 @@ function FilaSaldo({ etiqueta, valor, fuerte }: { etiqueta: string; valor: strin
 
 /** Formulario de solicitud con vista previa en vivo. `trabajadorId` lo usa Personas para registrar a nombre de otra persona. */
 export function FormularioSolicitud({ tipos, trabajadorId, alEnviar }: { tipos: TipoAusencia[]; trabajadorId?: string; alEnviar: (id: string) => void }) {
-  const [tipoCodigo, setTipo] = useState(tipos[0]?.codigo ?? "VACACIONES");
+  // Vacaciones primero: es lo que se pide la gran mayoría de las veces (la lista viene ordenada por nombre).
+  const [tipoCodigo, setTipo] = useState(tipos.find((t) => t.codigo === "VACACIONES")?.codigo ?? tipos[0]?.codigo ?? "VACACIONES");
   const [desde, setDesde] = useState("");
   const [hasta, setHasta] = useState("");
   const [comentario, setComentario] = useState("");
@@ -128,7 +129,7 @@ export function FormularioSolicitud({ tipos, trabajadorId, alEnviar }: { tipos: 
           Qué necesitas
         </label>
         <select id="tipo" value={tipoCodigo} onChange={(e) => setTipo(e.target.value)} className="mt-2 w-full rounded-lg border border-moana-200 bg-white px-4 py-3">
-          {tipos.map((t) => (
+          {[...tipos].sort((a, b) => Number(b.codigo === "VACACIONES") - Number(a.codigo === "VACACIONES")).map((t) => (
             <option key={t.codigo} value={t.codigo}>
               {t.nombre}
             </option>
