@@ -79,3 +79,39 @@ export function nombrePeriodo(periodo: string): string {
   const [a, m] = periodo.split("-").map(Number);
   return `${MESES_CORTOS[m - 1]} de ${a}`;
 }
+
+/** "2026-12-21" → "lun 21 dic". Sin zona horaria: es una fecha de calendario. */
+export function fechaCorta(fecha: string, conAnio = false): string {
+  const [a, m, d] = fecha.split("-").map(Number);
+  const dia = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"][new Date(Date.UTC(a, m - 1, d)).getUTCDay()];
+  return `${dia} ${d} ${MESES[m - 1].slice(0, 3)}${conAnio ? ` ${a}` : ""}`;
+}
+
+export function rangoFechas(desde: string, hasta: string): string {
+  if (desde === hasta) return fechaCorta(desde, true);
+  return `${fechaCorta(desde, desde.slice(0, 4) !== hasta.slice(0, 4))} al ${fechaCorta(hasta, true)}`;
+}
+
+/** 7.5 → "7,5 días"; 1 → "1 día". */
+export function dias(n: number): string {
+  const texto = n.toLocaleString("es-CL", { maximumFractionDigits: 2 });
+  return `${texto} ${n === 1 ? "día" : "días"}`;
+}
+
+export const ESTADO_SOLICITUD: Record<string, { texto: string; clase: string }> = {
+  PENDIENTE: { texto: "Pendiente", clase: "bg-liquen-soft text-basalto" },
+  APROBADA: { texto: "Aprobada", clase: "bg-moana-200 text-moana-950" },
+  RECHAZADA: { texto: "Rechazada", clase: "bg-toromiro-soft text-toromiro" },
+  CANCELADA: { texto: "Cancelada", clase: "bg-rano text-basalto-soft" },
+};
+
+/** Hace cuánto, en palabras: "hace 3 h", "hace 2 días". */
+export function haceCuanto(iso: string, ahora = new Date()): string {
+  const min = Math.round((ahora.getTime() - new Date(iso).getTime()) / 60000);
+  if (min < 1) return "recién";
+  if (min < 60) return `hace ${min} min`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `hace ${h} h`;
+  const d = Math.round(h / 24);
+  return `hace ${d} ${d === 1 ? "día" : "días"}`;
+}

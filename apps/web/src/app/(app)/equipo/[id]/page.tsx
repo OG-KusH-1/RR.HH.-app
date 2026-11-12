@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { Aviso, Cargando, useDatos } from "@/components/datos";
 import { Ficha } from "@/components/ficha";
 import { Prevision } from "@/components/prevision";
+import { VacacionesFicha } from "@/components/vacaciones-ficha";
 import { useUsuario } from "@/components/sesion";
 import { useState } from "react";
 import { api } from "@/lib/api";
@@ -30,6 +31,7 @@ export default function FichaTrabajadorPage() {
           <div className="mt-8">
             <Ficha t={datos} />
             <Prevision t={datos} editable={usuario.rol === "PERSONAS"} alGuardar={() => setVersion((v) => v + 1)} />
+            <VacacionesFicha trabajadorId={datos.id} esPersonas={usuario.rol === "PERSONAS"} />
           </div>
         </>
       )}

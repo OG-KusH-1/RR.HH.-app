@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { date, index, integer, jsonb, numeric, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { boolean, date, index, integer, jsonb, numeric, pgEnum, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 import { ROLES } from '../common/roles.js';
 
 export const rolEnum = pgEnum('rol', ROLES);
@@ -53,6 +53,19 @@ export const trabajadores = pgTable(
     saludId: uuid('salud_id').references(() => institucionesSalud.id),
     /** Plan pactado con la Isapre, en UF. Nulo para Fonasa. */
     planIsapreUf: numeric('plan_isapre_uf', { precision: 8, scale: 4, mode: 'number' }),
+    // --- Contrato y antigüedad ---
+    /** Término pactado de un contrato a plazo fijo u obra. Alimenta las alertas de vencimiento (HU-16). */
+    fechaTerminoContrato: date('fecha_termino_contrato'),
+    fechaDesvinculacion: date('fecha_desvinculacion'),
+    /**
+     * Años trabajados con empleadores anteriores, acreditados con documento (HU-11).
+     * El art. 68 del Código del Trabajo permite hacer valer hasta 10; el tope se aplica en el cálculo, no aquí,
+     * para conservar el dato tal como se acreditó.
+     */
+    aniosPreviosReconocidos: numeric('anios_previos_reconocidos', { precision: 4, scale: 1, mode: 'number' }).notNull().default(0),
+    respaldoAniosPrevios: text('respaldo_anios_previos'),
+    /** Correo personal opcional, para invitaciones y avisos cuando se active el envío de correos. */
+    email: text(),
     ...auditoria,
   },
   (t) => [uniqueIndex('trabajadores_empresa_rut_uq').on(t.empresaId, t.rut), index('trabajadores_sede_idx').on(t.sedeId)],
@@ -69,7 +82,27 @@ export const usuarios = pgTable('usuarios', {
   intentosFallidos: integer('intentos_fallidos').notNull().default(0),
   bloqueadoHasta: timestamp('bloqueado_hasta', { withTimezone: true }),
   ultimoIngreso: timestamp('ultimo_ingreso', { withTimezone: true }),
+  /** Secreto TOTP del segundo factor, cifrado con AES-256-GCM (ver common/cifrado.ts). Nunca se guarda en claro. */
+  totpSecretoCifrado: text('totp_secreto_cifrado'),
+  /** Fecha en que el usuario confirmó su primer código; sin ella el segundo factor no está activo. */
+  totpActivadoEn: timestamp('totp_activado_en', { withTimezone: true }),
   ...auditoria,
+});
+
+/**
+ * Invitaciones para crear la primera contraseña (HU-02). Se guarda el SHA-256 del código,
+ * no el código: quien lea la base de datos no puede usar una invitación pendiente.
+ */
+export const invitaciones = pgTable('invitaciones', {
+  id: uuid().primaryKey().defaultRandom(),
+  usuarioId: uuid('usuario_id')
+    .notNull()
+    .references(() => usuarios.id, { onDelete: 'cascade' }),
+  hashCodigo: text('hash_codigo').notNull().unique(),
+  expiraEn: timestamp('expira_en', { withTimezone: true }).notNull(),
+  usadaEn: timestamp('usada_en', { withTimezone: true }),
+  creadaPor: uuid('creada_por').references(() => usuarios.id),
+  creadaEn: timestamp('creada_en', { withTimezone: true }).notNull().defaultNow(),
 });
 
 /** Sesiones del navegador. El id es el SHA-256 del token de la cookie: el token nunca se guarda. */
@@ -193,6 +226,242 @@ export const indicadoresMensuales = pgTable('indicadores_mensuales', {
   ...auditoria,
 });
 
+// ---------------------------------------------------------------------------
+// Vacaciones y ausencias (E3)
+//
+// El saldo de vacaciones NO se guarda como un número que se edita: se calcula.
+// Devengado (función pura desde la fecha de ingreso) + movimientos del libro
+// `movimientos_vacaciones`. Así cada saldo se puede explicar línea por línea (HU-08)
+// y un error se corrige con un movimiento nuevo, nunca sobrescribiendo.
+// ---------------------------------------------------------------------------
+
+/** Feriados legales. Cambian por ley cada año, por eso viven en la base de datos con su fuente. */
+export const feriados = pgTable('feriados', {
+  fecha: date().primaryKey(),
+  nombre: text().notNull(),
+  /** Irrenunciable para el comercio (Ley 19.973). Lo usará el módulo de turnos. */
+  irrenunciable: boolean().notNull().default(false),
+  fuente: text().notNull(),
+});
+
+/** Tipos de ausencia configurables (HU-12). */
+export const tiposAusencia = pgTable('tipos_ausencia', {
+  id: uuid().primaryKey().defaultRandom(),
+  codigo: text().notNull().unique(),
+  nombre: text().notNull(),
+  descripcion: text().notNull(),
+  /** Descuenta días del saldo de vacaciones. Solo el feriado legal lo hace. */
+  afectaSaldo: boolean('afecta_saldo').notNull().default(false),
+  conGoce: boolean('con_goce').notNull().default(true),
+  /** El detalle (diagnóstico, documento) es dato sensible: solo lo ve Personas y el propio trabajador. */
+  sensible: boolean().notNull().default(false),
+  /** Sin aprobación queda registrada al informarla (una licencia médica no se "aprueba"). */
+  requiereAprobacion: boolean('requiere_aprobacion').notNull().default(true),
+  /** Permite fechas pasadas. Las vacaciones no; una licencia sí, porque se informa después de emitida. */
+  permiteRetroactivo: boolean('permite_retroactivo').notNull().default(false),
+  activo: boolean().notNull().default(true),
+});
+
+export const estadoSolicitudEnum = pgEnum('estado_solicitud', ['PENDIENTE', 'APROBADA', 'RECHAZADA', 'CANCELADA']);
+
+export const solicitudesAusencia = pgTable(
+  'solicitudes_ausencia',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    empresaId: uuid('empresa_id')
+      .notNull()
+      .references(() => empresas.id),
+    trabajadorId: uuid('trabajador_id')
+      .notNull()
+      .references(() => trabajadores.id),
+    tipoId: uuid('tipo_id')
+      .notNull()
+      .references(() => tiposAusencia.id),
+    desde: date().notNull(),
+    hasta: date().notNull(),
+    /** Días hábiles que consume (lunes a viernes sin feriados, art. 69 CT). Se fija al enviar y se recalcula al aprobar. */
+    diasHabiles: integer('dias_habiles').notNull(),
+    estado: estadoSolicitudEnum().notNull().default('PENDIENTE'),
+    comentario: text(),
+    /** Diagnóstico o folio de licencia. Sensible: nunca sale hacia la jefatura ni a la auditoría. */
+    detalleReservado: text('detalle_reservado'),
+    motivoRechazo: text('motivo_rechazo'),
+    creadaPor: uuid('creada_por').references(() => usuarios.id),
+    resueltaPor: uuid('resuelta_por').references(() => usuarios.id),
+    resueltaEn: timestamp('resuelta_en', { withTimezone: true }),
+    ...auditoria,
+  },
+  (t) => [index('solicitudes_trabajador_idx').on(t.trabajadorId), index('solicitudes_empresa_fechas_idx').on(t.empresaId, t.desde, t.hasta)],
+);
+
+export const tipoMovimientoEnum = pgEnum('tipo_movimiento_vacaciones', ['TOMADO_ANTERIOR', 'TOMADO', 'REVERSA', 'AJUSTE']);
+
+/**
+ * Libro de movimientos de vacaciones. Solo se inserta.
+ * `dias` es negativo cuando consume saldo y positivo cuando lo devuelve o lo aumenta.
+ */
+export const movimientosVacaciones = pgTable(
+  'movimientos_vacaciones',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    trabajadorId: uuid('trabajador_id')
+      .notNull()
+      .references(() => trabajadores.id),
+    fecha: date().notNull(),
+    tipo: tipoMovimientoEnum().notNull(),
+    dias: numeric({ precision: 6, scale: 2, mode: 'number' }).notNull(),
+    solicitudId: uuid('solicitud_id').references(() => solicitudesAusencia.id),
+    motivo: text().notNull(),
+    creadoPor: uuid('creado_por').references(() => usuarios.id),
+    creadoEn: timestamp('creado_en', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('movimientos_trabajador_idx').on(t.trabajadorId)],
+);
+
+// ---------------------------------------------------------------------------
+// Avisos dentro de la aplicación. El envío por correo o WhatsApp se agrega
+// después como otro canal que lee esta misma tabla.
+// ---------------------------------------------------------------------------
+
+export const notificaciones = pgTable(
+  'notificaciones',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    empresaId: uuid('empresa_id')
+      .notNull()
+      .references(() => empresas.id),
+    /** Destinatario. Se usa el trabajador y no el usuario para avisar aunque aún no active su cuenta. */
+    trabajadorId: uuid('trabajador_id')
+      .notNull()
+      .references(() => trabajadores.id),
+    tipo: text().notNull(),
+    titulo: text().notNull(),
+    mensaje: text().notNull(),
+    enlace: text(),
+    /** Evita duplicados en avisos automáticos, por ejemplo "vence:<doc>:30:<destinatario>". */
+    claveUnica: text('clave_unica').unique(),
+    leidaEn: timestamp('leida_en', { withTimezone: true }),
+    creadaEn: timestamp('creada_en', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('notificaciones_destinatario_idx').on(t.trabajadorId, t.leidaEn)],
+);
+
+// ---------------------------------------------------------------------------
+// Documentos (E4)
+// ---------------------------------------------------------------------------
+
+/**
+ * Quién ve un documento, además de Personas (que ve todo):
+ * - TRABAJADOR: el propio trabajador y Gerencia (contrato, anexos).
+ * - INTERNO: Gerencia, no el trabajador (evaluaciones en borrador, cotizaciones).
+ * - RESERVADO: solo Personas (licencias, exámenes de salud). La jefatura nunca ve documentos.
+ */
+export const visibilidadDocumentoEnum = pgEnum('visibilidad_documento', ['TRABAJADOR', 'INTERNO', 'RESERVADO']);
+
+export const tiposDocumento = pgTable('tipos_documento', {
+  id: uuid().primaryKey().defaultRandom(),
+  codigo: text().notNull().unique(),
+  nombre: text().notNull(),
+  /** Sugiere pedir fecha de vencimiento al subir (licencia de conducir, examen preocupacional). */
+  conVencimiento: boolean('con_vencimiento').notNull().default(false),
+  visibilidadPorDefecto: visibilidadDocumentoEnum('visibilidad_por_defecto').notNull().default('TRABAJADOR'),
+});
+
+export const documentos = pgTable(
+  'documentos',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    empresaId: uuid('empresa_id')
+      .notNull()
+      .references(() => empresas.id),
+    trabajadorId: uuid('trabajador_id')
+      .notNull()
+      .references(() => trabajadores.id),
+    tipoId: uuid('tipo_id')
+      .notNull()
+      .references(() => tiposDocumento.id),
+    nombreArchivo: text('nombre_archivo').notNull(),
+    /** Tipo detectado por los bytes del archivo, no el que declara el navegador. */
+    mime: text().notNull(),
+    tamano: integer().notNull(),
+    /** Ubicación interna en el almacén. Nunca es una URL pública. */
+    claveAlmacen: text('clave_almacen').notNull(),
+    /** Huella del archivo original, para demostrar que no se alteró. */
+    sha256: text().notNull(),
+    venceEl: date('vence_el'),
+    visibilidad: visibilidadDocumentoEnum().notNull(),
+    notas: text(),
+    subidoPor: uuid('subido_por').references(() => usuarios.id),
+    creadoEn: timestamp('creado_en', { withTimezone: true }).notNull().defaultNow(),
+    /** Borrado lógico: el archivo se conserva por los plazos legales de retención. */
+    eliminadoEn: timestamp('eliminado_en', { withTimezone: true }),
+  },
+  (t) => [index('documentos_trabajador_idx').on(t.trabajadorId), index('documentos_vence_idx').on(t.venceEl)],
+);
+
+/** Documentos obligatorios por cargo (HU-17). `cargo = '*'` aplica a toda la empresa. */
+export const documentosRequeridos = pgTable(
+  'documentos_requeridos',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    empresaId: uuid('empresa_id')
+      .notNull()
+      .references(() => empresas.id),
+    cargo: text().notNull(),
+    tipoId: uuid('tipo_id')
+      .notNull()
+      .references(() => tiposDocumento.id),
+  },
+  (t) => [uniqueIndex('requeridos_uq').on(t.empresaId, t.cargo, t.tipoId)],
+);
+
+// ---------------------------------------------------------------------------
+// Certificados verificables (E5)
+// ---------------------------------------------------------------------------
+
+export const certificados = pgTable('certificados', {
+  id: uuid().primaryKey().defaultRandom(),
+  empresaId: uuid('empresa_id')
+    .notNull()
+    .references(() => empresas.id),
+  trabajadorId: uuid('trabajador_id')
+    .notNull()
+    .references(() => trabajadores.id),
+  /** Código aleatorio de verificación. Imposible de adivinar: 60 bits de azar. */
+  codigo: text().notNull().unique(),
+  tipo: text().notNull(),
+  /** Copia exacta de lo impreso: si la ficha cambia después, el certificado sigue diciendo lo que dijo. */
+  datos: jsonb().$type<Record<string, string>>().notNull(),
+  emitidoPor: uuid('emitido_por').references(() => usuarios.id),
+  emitidoEn: timestamp('emitido_en', { withTimezone: true }).notNull().defaultNow(),
+  revocadoEn: timestamp('revocado_en', { withTimezone: true }),
+  motivoRevocacion: text('motivo_revocacion'),
+});
+
+// ---------------------------------------------------------------------------
+// Solicitudes del titular de datos (HU-06 y HU-20, Ley 21.719)
+// ---------------------------------------------------------------------------
+
+export const tipoSolicitudTitularEnum = pgEnum('tipo_solicitud_titular', ['ACCESO', 'RECTIFICACION']);
+export const estadoSolicitudTitularEnum = pgEnum('estado_solicitud_titular', ['ABIERTA', 'RESUELTA', 'RECHAZADA']);
+
+export const solicitudesTitular = pgTable('solicitudes_titular', {
+  id: uuid().primaryKey().defaultRandom(),
+  empresaId: uuid('empresa_id')
+    .notNull()
+    .references(() => empresas.id),
+  trabajadorId: uuid('trabajador_id')
+    .notNull()
+    .references(() => trabajadores.id),
+  tipo: tipoSolicitudTitularEnum().notNull(),
+  detalle: text().notNull(),
+  estado: estadoSolicitudTitularEnum().notNull().default('ABIERTA'),
+  respuesta: text(),
+  resueltaPor: uuid('resuelta_por').references(() => usuarios.id),
+  resueltaEn: timestamp('resuelta_en', { withTimezone: true }),
+  creadaEn: timestamp('creada_en', { withTimezone: true }).notNull().defaultNow(),
+});
+
 export type Empresa = typeof empresas.$inferSelect;
 export type Sede = typeof sedes.$inferSelect;
 export type Trabajador = typeof trabajadores.$inferSelect;
@@ -200,3 +469,6 @@ export type Usuario = typeof usuarios.$inferSelect;
 export type Afp = typeof afps.$inferSelect;
 export type InstitucionSalud = typeof institucionesSalud.$inferSelect;
 export type IndicadoresMensuales = typeof indicadoresMensuales.$inferSelect;
+export type TipoAusencia = typeof tiposAusencia.$inferSelect;
+export type SolicitudAusencia = typeof solicitudesAusencia.$inferSelect;
+export type Documento = typeof documentos.$inferSelect;

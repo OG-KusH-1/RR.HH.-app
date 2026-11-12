@@ -7,7 +7,9 @@ import { DrizzleModule } from '@nestjs/drizzle';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { AusenciasModule } from './ausencias/ausencias.controller.js';
 import { AuthModule } from './auth/auth.module.js';
+import { AvisosModule } from './avisos/avisos.module.js';
 import { validarEnv, type Env } from './config/env.js';
 import { relations } from './db/relations.js';
 import { TrabajadoresModule } from './employees/trabajadores.module.js';
@@ -42,6 +44,8 @@ import { PrevisionalModule } from './previsional/previsional.module.js';
     AuthModule,
     TrabajadoresModule,
     PrevisionalModule,
+    AvisosModule,
+    AusenciasModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

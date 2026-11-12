@@ -1,0 +1,3914 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "2f9ab8ea-f035-4c8b-ab57-d5ee231b60d0",
+  "prevIds": [
+    "f665dc1e-accf-4f0d-ab98-383565b32244"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "estado_solicitud"
+      ],
+      "writes": [
+        "s|enum|public.estado_solicitud",
+        "n|enum|public.estado_solicitud",
+        "e|enum|public.estado_solicitud",
+        "n|type|public.estado_solicitud"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "estado_solicitud_titular"
+      ],
+      "writes": [
+        "s|enum|public.estado_solicitud_titular",
+        "n|enum|public.estado_solicitud_titular",
+        "e|enum|public.estado_solicitud_titular",
+        "n|type|public.estado_solicitud_titular"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "tipo_movimiento_vacaciones"
+      ],
+      "writes": [
+        "s|enum|public.tipo_movimiento_vacaciones",
+        "n|enum|public.tipo_movimiento_vacaciones",
+        "e|enum|public.tipo_movimiento_vacaciones",
+        "n|type|public.tipo_movimiento_vacaciones"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "tipo_solicitud_titular"
+      ],
+      "writes": [
+        "s|enum|public.tipo_solicitud_titular",
+        "n|enum|public.tipo_solicitud_titular",
+        "e|enum|public.tipo_solicitud_titular",
+        "n|type|public.tipo_solicitud_titular"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_enum",
+      "statementTarget": [
+        "enum",
+        "public",
+        "visibilidad_documento"
+      ],
+      "writes": [
+        "s|enum|public.visibilidad_documento",
+        "n|enum|public.visibilidad_documento",
+        "e|enum|public.visibilidad_documento",
+        "n|type|public.visibilidad_documento"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "certificados"
+      ],
+      "writes": [
+        "s|tbl|public.certificados",
+        "n|tbl|public.certificados",
+        "e|tbl|public.certificados",
+        "n|rel|public.certificados",
+        "n|type|public.certificados",
+        "n|rel|public.certificados_pkey",
+        "n|rel|public.certificados_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos"
+      ],
+      "writes": [
+        "s|tbl|public.documentos",
+        "n|tbl|public.documentos",
+        "e|tbl|public.documentos",
+        "n|rel|public.documentos",
+        "n|type|public.documentos",
+        "n|rel|public.documentos_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.visibilidad_documento"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos_requeridos"
+      ],
+      "writes": [
+        "s|tbl|public.documentos_requeridos",
+        "n|tbl|public.documentos_requeridos",
+        "e|tbl|public.documentos_requeridos",
+        "n|rel|public.documentos_requeridos",
+        "n|type|public.documentos_requeridos",
+        "n|rel|public.documentos_requeridos_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "feriados"
+      ],
+      "writes": [
+        "s|tbl|public.feriados",
+        "n|tbl|public.feriados",
+        "e|tbl|public.feriados",
+        "n|rel|public.feriados",
+        "n|type|public.feriados",
+        "n|rel|public.feriados_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitaciones"
+      ],
+      "writes": [
+        "s|tbl|public.invitaciones",
+        "n|tbl|public.invitaciones",
+        "e|tbl|public.invitaciones",
+        "n|rel|public.invitaciones",
+        "n|type|public.invitaciones",
+        "n|rel|public.invitaciones_pkey",
+        "n|rel|public.invitaciones_hash_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "movimientos_vacaciones"
+      ],
+      "writes": [
+        "s|tbl|public.movimientos_vacaciones",
+        "n|tbl|public.movimientos_vacaciones",
+        "e|tbl|public.movimientos_vacaciones",
+        "n|rel|public.movimientos_vacaciones",
+        "n|type|public.movimientos_vacaciones",
+        "n|rel|public.movimientos_vacaciones_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.tipo_movimiento_vacaciones"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "notificaciones"
+      ],
+      "writes": [
+        "s|tbl|public.notificaciones",
+        "n|tbl|public.notificaciones",
+        "e|tbl|public.notificaciones",
+        "n|rel|public.notificaciones",
+        "n|type|public.notificaciones",
+        "n|rel|public.notificaciones_pkey",
+        "n|rel|public.notificaciones_clave_unica_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|tbl|public.solicitudes_ausencia",
+        "n|tbl|public.solicitudes_ausencia",
+        "e|tbl|public.solicitudes_ausencia",
+        "n|rel|public.solicitudes_ausencia",
+        "n|type|public.solicitudes_ausencia",
+        "n|rel|public.solicitudes_ausencia_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.estado_solicitud"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_titular"
+      ],
+      "writes": [
+        "s|tbl|public.solicitudes_titular",
+        "n|tbl|public.solicitudes_titular",
+        "e|tbl|public.solicitudes_titular",
+        "n|rel|public.solicitudes_titular",
+        "n|type|public.solicitudes_titular",
+        "n|rel|public.solicitudes_titular_pkey"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.tipo_solicitud_titular",
+        "n|enum|public.estado_solicitud_titular"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "tipos_ausencia"
+      ],
+      "writes": [
+        "s|tbl|public.tipos_ausencia",
+        "n|tbl|public.tipos_ausencia",
+        "e|tbl|public.tipos_ausencia",
+        "n|rel|public.tipos_ausencia",
+        "n|type|public.tipos_ausencia",
+        "n|rel|public.tipos_ausencia_pkey",
+        "n|rel|public.tipos_ausencia_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "tipos_documento"
+      ],
+      "writes": [
+        "s|tbl|public.tipos_documento",
+        "n|tbl|public.tipos_documento",
+        "e|tbl|public.tipos_documento",
+        "n|rel|public.tipos_documento",
+        "n|type|public.tipos_documento",
+        "n|rel|public.tipos_documento_pkey",
+        "n|rel|public.tipos_documento_codigo_key"
+      ],
+      "reads": [
+        "n|sch|public",
+        "n|enum|public.visibilidad_documento"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "fecha_termino_contrato"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.fecha_termino_contrato",
+        "n|col|public.trabajadores.fecha_termino_contrato",
+        "e|col|public.trabajadores.fecha_termino_contrato"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "fecha_desvinculacion"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.fecha_desvinculacion",
+        "n|col|public.trabajadores.fecha_desvinculacion",
+        "e|col|public.trabajadores.fecha_desvinculacion"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "anios_previos_reconocidos"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.anios_previos_reconocidos",
+        "n|col|public.trabajadores.anios_previos_reconocidos",
+        "e|col|public.trabajadores.anios_previos_reconocidos"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "respaldo_anios_previos"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.respaldo_anios_previos",
+        "n|col|public.trabajadores.respaldo_anios_previos",
+        "e|col|public.trabajadores.respaldo_anios_previos"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "trabajadores",
+        "email"
+      ],
+      "writes": [
+        "s|col|public.trabajadores.email",
+        "n|col|public.trabajadores.email",
+        "e|col|public.trabajadores.email"
+      ],
+      "reads": [
+        "n|tbl|public.trabajadores",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "usuarios",
+        "totp_secreto_cifrado"
+      ],
+      "writes": [
+        "s|col|public.usuarios.totp_secreto_cifrado",
+        "n|col|public.usuarios.totp_secreto_cifrado",
+        "e|col|public.usuarios.totp_secreto_cifrado"
+      ],
+      "reads": [
+        "n|tbl|public.usuarios",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "usuarios",
+        "totp_activado_en"
+      ],
+      "writes": [
+        "s|col|public.usuarios.totp_activado_en",
+        "n|col|public.usuarios.totp_activado_en",
+        "e|col|public.usuarios.totp_activado_en"
+      ],
+      "reads": [
+        "n|tbl|public.usuarios",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "documentos",
+        "documentos_trabajador_idx"
+      ],
+      "writes": [
+        "s|idx|public.documentos_trabajador_idx",
+        "n|idx|public.documentos_trabajador_idx",
+        "e|idx|public.documentos_trabajador_idx",
+        "n|rel|public.documentos_trabajador_idx"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|col|public.documentos.trabajador_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "documentos",
+        "documentos_vence_idx"
+      ],
+      "writes": [
+        "s|idx|public.documentos_vence_idx",
+        "n|idx|public.documentos_vence_idx",
+        "e|idx|public.documentos_vence_idx",
+        "n|rel|public.documentos_vence_idx"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|col|public.documentos.vence_el"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "documentos_requeridos",
+        "requeridos_uq"
+      ],
+      "writes": [
+        "s|idx|public.requeridos_uq",
+        "n|idx|public.requeridos_uq",
+        "e|idx|public.requeridos_uq",
+        "n|rel|public.requeridos_uq"
+      ],
+      "reads": [
+        "n|tbl|public.documentos_requeridos",
+        "n|sch|public",
+        "n|col|public.documentos_requeridos.empresa_id",
+        "n|col|public.documentos_requeridos.cargo",
+        "n|col|public.documentos_requeridos.tipo_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "movimientos_vacaciones",
+        "movimientos_trabajador_idx"
+      ],
+      "writes": [
+        "s|idx|public.movimientos_trabajador_idx",
+        "n|idx|public.movimientos_trabajador_idx",
+        "e|idx|public.movimientos_trabajador_idx",
+        "n|rel|public.movimientos_trabajador_idx"
+      ],
+      "reads": [
+        "n|tbl|public.movimientos_vacaciones",
+        "n|sch|public",
+        "n|col|public.movimientos_vacaciones.trabajador_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "notificaciones",
+        "notificaciones_destinatario_idx"
+      ],
+      "writes": [
+        "s|idx|public.notificaciones_destinatario_idx",
+        "n|idx|public.notificaciones_destinatario_idx",
+        "e|idx|public.notificaciones_destinatario_idx",
+        "n|rel|public.notificaciones_destinatario_idx"
+      ],
+      "reads": [
+        "n|tbl|public.notificaciones",
+        "n|sch|public",
+        "n|col|public.notificaciones.trabajador_id",
+        "n|col|public.notificaciones.leida_en"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "solicitudes_ausencia",
+        "solicitudes_trabajador_idx"
+      ],
+      "writes": [
+        "s|idx|public.solicitudes_trabajador_idx",
+        "n|idx|public.solicitudes_trabajador_idx",
+        "e|idx|public.solicitudes_trabajador_idx",
+        "n|rel|public.solicitudes_trabajador_idx"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.trabajador_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "solicitudes_ausencia",
+        "solicitudes_empresa_fechas_idx"
+      ],
+      "writes": [
+        "s|idx|public.solicitudes_empresa_fechas_idx",
+        "n|idx|public.solicitudes_empresa_fechas_idx",
+        "e|idx|public.solicitudes_empresa_fechas_idx",
+        "n|rel|public.solicitudes_empresa_fechas_idx"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.empresa_id",
+        "n|col|public.solicitudes_ausencia.desde",
+        "n|col|public.solicitudes_ausencia.hasta"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "certificados"
+      ],
+      "writes": [
+        "s|fk|public.certificados.certificados_empresa_id_empresas_id_fkey",
+        "n|fk|public.certificados.certificados_empresa_id_empresas_id_fkey",
+        "e|fk|public.certificados.certificados_empresa_id_empresas_id_fkey",
+        "n|con|public.certificados.certificados_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.certificados",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.certificados.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "certificados"
+      ],
+      "writes": [
+        "s|fk|public.certificados.certificados_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.certificados.certificados_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.certificados.certificados_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.certificados.certificados_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.certificados",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.certificados.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "certificados"
+      ],
+      "writes": [
+        "s|fk|public.certificados.certificados_emitido_por_usuarios_id_fkey",
+        "n|fk|public.certificados.certificados_emitido_por_usuarios_id_fkey",
+        "e|fk|public.certificados.certificados_emitido_por_usuarios_id_fkey",
+        "n|con|public.certificados.certificados_emitido_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.certificados",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.certificados.emitido_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos"
+      ],
+      "writes": [
+        "s|fk|public.documentos.documentos_empresa_id_empresas_id_fkey",
+        "n|fk|public.documentos.documentos_empresa_id_empresas_id_fkey",
+        "e|fk|public.documentos.documentos_empresa_id_empresas_id_fkey",
+        "n|con|public.documentos.documentos_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.documentos.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos"
+      ],
+      "writes": [
+        "s|fk|public.documentos.documentos_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.documentos.documentos_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.documentos.documentos_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.documentos.documentos_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.documentos.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos"
+      ],
+      "writes": [
+        "s|fk|public.documentos.documentos_tipo_id_tipos_documento_id_fkey",
+        "n|fk|public.documentos.documentos_tipo_id_tipos_documento_id_fkey",
+        "e|fk|public.documentos.documentos_tipo_id_tipos_documento_id_fkey",
+        "n|con|public.documentos.documentos_tipo_id_tipos_documento_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|tbl|public.tipos_documento",
+        "n|sch|public",
+        "n|col|public.documentos.tipo_id",
+        "n|col|public.tipos_documento.id",
+        "e|uniqueness|public.tipos_documento.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos"
+      ],
+      "writes": [
+        "s|fk|public.documentos.documentos_subido_por_usuarios_id_fkey",
+        "n|fk|public.documentos.documentos_subido_por_usuarios_id_fkey",
+        "e|fk|public.documentos.documentos_subido_por_usuarios_id_fkey",
+        "n|con|public.documentos.documentos_subido_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.documentos.subido_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos_requeridos"
+      ],
+      "writes": [
+        "s|fk|public.documentos_requeridos.documentos_requeridos_empresa_id_empresas_id_fkey",
+        "n|fk|public.documentos_requeridos.documentos_requeridos_empresa_id_empresas_id_fkey",
+        "e|fk|public.documentos_requeridos.documentos_requeridos_empresa_id_empresas_id_fkey",
+        "n|con|public.documentos_requeridos.documentos_requeridos_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos_requeridos",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.documentos_requeridos.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "documentos_requeridos"
+      ],
+      "writes": [
+        "s|fk|public.documentos_requeridos.documentos_requeridos_tipo_id_tipos_documento_id_fkey",
+        "n|fk|public.documentos_requeridos.documentos_requeridos_tipo_id_tipos_documento_id_fkey",
+        "e|fk|public.documentos_requeridos.documentos_requeridos_tipo_id_tipos_documento_id_fkey",
+        "n|con|public.documentos_requeridos.documentos_requeridos_tipo_id_tipos_documento_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.documentos_requeridos",
+        "n|sch|public",
+        "n|tbl|public.tipos_documento",
+        "n|sch|public",
+        "n|col|public.documentos_requeridos.tipo_id",
+        "n|col|public.tipos_documento.id",
+        "e|uniqueness|public.tipos_documento.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitaciones"
+      ],
+      "writes": [
+        "s|fk|public.invitaciones.invitaciones_usuario_id_usuarios_id_fkey",
+        "n|fk|public.invitaciones.invitaciones_usuario_id_usuarios_id_fkey",
+        "e|fk|public.invitaciones.invitaciones_usuario_id_usuarios_id_fkey",
+        "n|con|public.invitaciones.invitaciones_usuario_id_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.invitaciones",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.invitaciones.usuario_id",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "invitaciones"
+      ],
+      "writes": [
+        "s|fk|public.invitaciones.invitaciones_creada_por_usuarios_id_fkey",
+        "n|fk|public.invitaciones.invitaciones_creada_por_usuarios_id_fkey",
+        "e|fk|public.invitaciones.invitaciones_creada_por_usuarios_id_fkey",
+        "n|con|public.invitaciones.invitaciones_creada_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.invitaciones",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.invitaciones.creada_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "movimientos_vacaciones"
+      ],
+      "writes": [
+        "s|fk|public.movimientos_vacaciones.movimientos_vacaciones_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.movimientos_vacaciones.movimientos_vacaciones_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.movimientos_vacaciones.movimientos_vacaciones_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.movimientos_vacaciones.movimientos_vacaciones_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.movimientos_vacaciones",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.movimientos_vacaciones.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "movimientos_vacaciones"
+      ],
+      "writes": [
+        "s|fk|public.movimientos_vacaciones.movimientos_vacaciones_W7icCDY4H4hv_fkey",
+        "n|fk|public.movimientos_vacaciones.movimientos_vacaciones_W7icCDY4H4hv_fkey",
+        "e|fk|public.movimientos_vacaciones.movimientos_vacaciones_W7icCDY4H4hv_fkey",
+        "n|con|public.movimientos_vacaciones.movimientos_vacaciones_W7icCDY4H4hv_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.movimientos_vacaciones",
+        "n|sch|public",
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|col|public.movimientos_vacaciones.solicitud_id",
+        "n|col|public.solicitudes_ausencia.id",
+        "e|uniqueness|public.solicitudes_ausencia.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "movimientos_vacaciones"
+      ],
+      "writes": [
+        "s|fk|public.movimientos_vacaciones.movimientos_vacaciones_creado_por_usuarios_id_fkey",
+        "n|fk|public.movimientos_vacaciones.movimientos_vacaciones_creado_por_usuarios_id_fkey",
+        "e|fk|public.movimientos_vacaciones.movimientos_vacaciones_creado_por_usuarios_id_fkey",
+        "n|con|public.movimientos_vacaciones.movimientos_vacaciones_creado_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.movimientos_vacaciones",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.movimientos_vacaciones.creado_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "notificaciones"
+      ],
+      "writes": [
+        "s|fk|public.notificaciones.notificaciones_empresa_id_empresas_id_fkey",
+        "n|fk|public.notificaciones.notificaciones_empresa_id_empresas_id_fkey",
+        "e|fk|public.notificaciones.notificaciones_empresa_id_empresas_id_fkey",
+        "n|con|public.notificaciones.notificaciones_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.notificaciones",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.notificaciones.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "notificaciones"
+      ],
+      "writes": [
+        "s|fk|public.notificaciones.notificaciones_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.notificaciones.notificaciones_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.notificaciones.notificaciones_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.notificaciones.notificaciones_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.notificaciones",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.notificaciones.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_ausencia.solicitudes_ausencia_empresa_id_empresas_id_fkey",
+        "n|fk|public.solicitudes_ausencia.solicitudes_ausencia_empresa_id_empresas_id_fkey",
+        "e|fk|public.solicitudes_ausencia.solicitudes_ausencia_empresa_id_empresas_id_fkey",
+        "n|con|public.solicitudes_ausencia.solicitudes_ausencia_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_ausencia.solicitudes_ausencia_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.solicitudes_ausencia.solicitudes_ausencia_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.solicitudes_ausencia.solicitudes_ausencia_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.solicitudes_ausencia.solicitudes_ausencia_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_ausencia.solicitudes_ausencia_tipo_id_tipos_ausencia_id_fkey",
+        "n|fk|public.solicitudes_ausencia.solicitudes_ausencia_tipo_id_tipos_ausencia_id_fkey",
+        "e|fk|public.solicitudes_ausencia.solicitudes_ausencia_tipo_id_tipos_ausencia_id_fkey",
+        "n|con|public.solicitudes_ausencia.solicitudes_ausencia_tipo_id_tipos_ausencia_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|tbl|public.tipos_ausencia",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.tipo_id",
+        "n|col|public.tipos_ausencia.id",
+        "e|uniqueness|public.tipos_ausencia.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_ausencia.solicitudes_ausencia_creada_por_usuarios_id_fkey",
+        "n|fk|public.solicitudes_ausencia.solicitudes_ausencia_creada_por_usuarios_id_fkey",
+        "e|fk|public.solicitudes_ausencia.solicitudes_ausencia_creada_por_usuarios_id_fkey",
+        "n|con|public.solicitudes_ausencia.solicitudes_ausencia_creada_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.creada_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_ausencia"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_ausencia.solicitudes_ausencia_resuelta_por_usuarios_id_fkey",
+        "n|fk|public.solicitudes_ausencia.solicitudes_ausencia_resuelta_por_usuarios_id_fkey",
+        "e|fk|public.solicitudes_ausencia.solicitudes_ausencia_resuelta_por_usuarios_id_fkey",
+        "n|con|public.solicitudes_ausencia.solicitudes_ausencia_resuelta_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_ausencia",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.solicitudes_ausencia.resuelta_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_titular"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_titular.solicitudes_titular_empresa_id_empresas_id_fkey",
+        "n|fk|public.solicitudes_titular.solicitudes_titular_empresa_id_empresas_id_fkey",
+        "e|fk|public.solicitudes_titular.solicitudes_titular_empresa_id_empresas_id_fkey",
+        "n|con|public.solicitudes_titular.solicitudes_titular_empresa_id_empresas_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_titular",
+        "n|sch|public",
+        "n|tbl|public.empresas",
+        "n|sch|public",
+        "n|col|public.solicitudes_titular.empresa_id",
+        "n|col|public.empresas.id",
+        "e|uniqueness|public.empresas.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_titular"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_titular.solicitudes_titular_trabajador_id_trabajadores_id_fkey",
+        "n|fk|public.solicitudes_titular.solicitudes_titular_trabajador_id_trabajadores_id_fkey",
+        "e|fk|public.solicitudes_titular.solicitudes_titular_trabajador_id_trabajadores_id_fkey",
+        "n|con|public.solicitudes_titular.solicitudes_titular_trabajador_id_trabajadores_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_titular",
+        "n|sch|public",
+        "n|tbl|public.trabajadores",
+        "n|sch|public",
+        "n|col|public.solicitudes_titular.trabajador_id",
+        "n|col|public.trabajadores.id",
+        "e|uniqueness|public.trabajadores.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "solicitudes_titular"
+      ],
+      "writes": [
+        "s|fk|public.solicitudes_titular.solicitudes_titular_resuelta_por_usuarios_id_fkey",
+        "n|fk|public.solicitudes_titular.solicitudes_titular_resuelta_por_usuarios_id_fkey",
+        "e|fk|public.solicitudes_titular.solicitudes_titular_resuelta_por_usuarios_id_fkey",
+        "n|con|public.solicitudes_titular.solicitudes_titular_resuelta_por_usuarios_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.solicitudes_titular",
+        "n|sch|public",
+        "n|tbl|public.usuarios",
+        "n|sch|public",
+        "n|col|public.solicitudes_titular.resuelta_por",
+        "n|col|public.usuarios.id",
+        "e|uniqueness|public.usuarios.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "certificados",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "documentos",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "documentos_requeridos",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "feriados",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "invitaciones",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "movimientos_vacaciones",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "notificaciones",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "solicitudes_ausencia",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "solicitudes_titular",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tipos_ausencia",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tipos_documento",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "estado_solicitud",
+        "values": [
+          "PENDIENTE",
+          "APROBADA",
+          "RECHAZADA",
+          "CANCELADA"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "estado_solicitud_titular",
+        "values": [
+          "ABIERTA",
+          "RESUELTA",
+          "RECHAZADA"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tipo_movimiento_vacaciones",
+        "values": [
+          "TOMADO_ANTERIOR",
+          "TOMADO",
+          "REVERSA",
+          "AJUSTE"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "tipo_solicitud_titular",
+        "values": [
+          "ACCESO",
+          "RECTIFICACION"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "visibilidad_documento",
+        "values": [
+          "TRABAJADOR",
+          "INTERNO",
+          "RESERVADO"
+        ],
+        "entityType": "enums"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "tipo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "datos",
+        "type": "jsonb",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "emitido_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "emitido_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "revocado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "motivo_revocacion",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "tipo_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "nombre_archivo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "mime",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "tamano",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "clave_almacen",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "sha256",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "vence_el",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "visibilidad",
+        "type": "visibilidad_documento",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "notas",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "subido_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "eliminado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "cargo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "tipo_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "feriados",
+        "name": "fecha",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "feriados",
+        "name": "nombre",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "feriados",
+        "name": "irrenunciable",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "feriados",
+        "name": "fuente",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "usuario_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "hash_codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "expira_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "usada_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "creada_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "creada_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "fecha",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "tipo",
+        "type": "tipo_movimiento_vacaciones",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "dias",
+        "type": "numeric(6,2)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "solicitud_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "motivo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "creado_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "tipo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "titulo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "mensaje",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "enlace",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "clave_unica",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "leida_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "creada_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "tipo_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "desde",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "hasta",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "dias_habiles",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "estado",
+        "type": "estado_solicitud",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'PENDIENTE'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "comentario",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "detalle_reservado",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "motivo_rechazo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "creada_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "resuelta_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "resuelta_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "creado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "actualizado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "empresa_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "trabajador_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "tipo",
+        "type": "tipo_solicitud_titular",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "detalle",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "estado",
+        "type": "estado_solicitud_titular",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'ABIERTA'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "respuesta",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "resuelta_por",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "resuelta_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "creada_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "nombre",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "descripcion",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "afecta_saldo",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "con_goce",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "true",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "sensible",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "requiere_aprobacion",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "true",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "permite_retroactivo",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "activo",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "true",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "gen_random_uuid()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "codigo",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "nombre",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "con_vencimiento",
+        "type": "boolean",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "false",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "visibilidad_por_defecto",
+        "type": "visibilidad_documento",
+        "typeSchema": "public",
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'TRABAJADOR'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "fecha_termino_contrato",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "fecha_desvinculacion",
+        "type": "date",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "anios_previos_reconocidos",
+        "type": "numeric(4,1)",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "'0'",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "respaldo_anios_previos",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "trabajadores",
+        "name": "email",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "usuarios",
+        "name": "totp_secreto_cifrado",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "usuarios",
+        "name": "totp_activado_en",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": false,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_trabajador_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "trabajador_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_vence_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "vence_el",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "requeridos_uq",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "empresa_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "cargo",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "tipo_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": true,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "movimientos_trabajador_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "trabajador_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "notificaciones_destinatario_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "trabajador_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "leida_en",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_trabajador_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "trabajador_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_empresa_fechas_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "empresa_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "desde",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          },
+          {
+            "value": "hasta",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "concurrently": false,
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "certificados_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "certificados_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "certificados_emitido_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "emitido_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_tipo_id_tipos_documento_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tipo_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tipos_documento",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_subido_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "subido_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "documentos_requeridos_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "documentos_requeridos_tipo_id_tipos_documento_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tipo_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tipos_documento",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "invitaciones_usuario_id_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "usuario_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "invitaciones_creada_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "creada_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "movimientos_vacaciones_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "movimientos_vacaciones_W7icCDY4H4hv_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "solicitud_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "solicitudes_ausencia",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "movimientos_vacaciones_creado_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "creado_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "notificaciones_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "notificaciones_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_tipo_id_tipos_ausencia_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tipo_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tipos_ausencia",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_creada_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "creada_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_resuelta_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "resuelta_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "solicitudes_titular_empresa_id_empresas_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "empresa_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "empresas",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "solicitudes_titular_trabajador_id_trabajadores_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "trabajador_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "trabajadores",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "solicitudes_titular_resuelta_por_usuarios_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "resuelta_por"
+        ],
+        "schemaTo": "public",
+        "tableTo": "usuarios",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "NO ACTION",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "certificados_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos",
+        "name": "documentos_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "documentos_requeridos",
+        "name": "documentos_requeridos_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "feriados",
+        "name": "feriados_pkey",
+        "columns": [
+          "fecha"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "invitaciones_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "movimientos_vacaciones",
+        "name": "movimientos_vacaciones_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "notificaciones_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_ausencia",
+        "name": "solicitudes_ausencia_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "solicitudes_titular",
+        "name": "solicitudes_titular_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "tipos_ausencia_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "tipos_documento_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "certificados",
+        "name": "certificados_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "invitaciones",
+        "name": "invitaciones_hash_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "hash_codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "notificaciones",
+        "name": "notificaciones_clave_unica_key",
+        "nameExplicit": false,
+        "columns": [
+          "clave_unica"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_ausencia",
+        "name": "tipos_ausencia_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "tipos_documento",
+        "name": "tipos_documento_codigo_key",
+        "nameExplicit": false,
+        "columns": [
+          "codigo"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    }
+  ]
+}
